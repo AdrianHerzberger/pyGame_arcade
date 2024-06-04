@@ -2,6 +2,7 @@ import pygame
 import math
 from pygame.locals import *
 from globals import *
+from input import *
 
 class World:
     def __init__(self, screen):
@@ -37,6 +38,13 @@ class World:
     def draw_meadow(self):
         for name in self.meadow:
             img = self.images_meadow[name]
-            bg_width = 
+            bg_width = img.get_width()
+            bg_height = img.get_height()
+            tiles = math.ceil(SCREEN_WIDTH / bg_width)
+            
+            for l in range(tiles):
+                self.screen.blit(img, ((l * bg_width), 0))
+            
+            
             
         

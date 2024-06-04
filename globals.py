@@ -1,8 +1,8 @@
 import pygame
 from pygame.locals import *
 
-SCREEN_WIDTH = 1500
-SCREEN_HEIGHT = 600
+SCREEN_WIDTH = 1000
+SCREEN_HEIGHT = 300
 FPS = 60
 
 CELLSIZE = 20
