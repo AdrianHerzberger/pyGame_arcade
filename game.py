@@ -26,6 +26,7 @@ def main():
                 running = False
 
         world.draw_meadow()
+        char.update_animation()
         current_character = char.get_current_idle_sprite()
         screen.blit(current_character, (20, 35))
 
