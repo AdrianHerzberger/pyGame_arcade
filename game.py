@@ -5,7 +5,7 @@ from OpenGL.GLU import *
 from globals import *
 from inputs import GameInputs
 from map import World
-from character import Character
+from character import Character_Animation
 
 clock = pygame.time.Clock()
 
@@ -16,7 +16,7 @@ def main():
 
     inputs = GameInputs()
     world = World(screen, inputs)
-    char = Character()
+    char = Character_Animation()
 
     running = True
     while running:
@@ -26,9 +26,8 @@ def main():
                 running = False
 
         world.draw_meadow()
-        char.update_animation()
-        current_character = char.get_current_idle_sprite()
-        screen.blit(current_character, (20, 35))
+        current_character = char.get_current_idle_animation()
+        screen.blit(current_character, (CHAR_X, CHAR_Y))
 
         pygame.display.flip()
         pygame.time.wait(10)
