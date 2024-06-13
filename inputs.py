@@ -15,7 +15,7 @@ class GameInputs:
             self.scroll += 5
         return self.scroll
     
-    def jump(self):
+    def jumping(self):
         self.key = pygame.key.get_pressed()
         if self.key[pygame.K_SPACE]:
             self.jump_force += 3.2
