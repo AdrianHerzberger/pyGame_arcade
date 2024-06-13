@@ -18,10 +18,17 @@ class GameInputs:
     def jumping(self):
         self.key = pygame.key.get_pressed()
         if self.key[pygame.K_SPACE]:
-            self.jump_force += 3.2
+            self.jump_force += 2.2
         else:
-            self.jump_force = 0
+            self.jump_force -= 1
         return self.jump_force
+    
+    def attack(self):
+        self.key = pygame.key.get_pressed()
+        if self.key[pygame.K_COMMA]:
+            print(f"{self.key[pygame.K_COMMA]}, is pressed")
+            self.attack += 1
+        return self.attack
         
 
     

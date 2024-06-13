@@ -31,7 +31,7 @@ def main():
         
         current_player = player.update()
         current_character = player.get_current_animation()
-        screen.blit(current_character, (CHAR_X, current_player))
+        screen.blit(current_character, (CHAR_X_POS, current_player))
 
         pygame.display.flip()
         pygame.time.wait(10)

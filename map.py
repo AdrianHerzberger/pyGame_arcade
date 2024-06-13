@@ -10,7 +10,7 @@ class World:
         self.screen = screen
         self.inputs = inputs
         self.mountain = ["sky", "rocks"]
-        self.meadow = ["sky", "sky_far", "grass", "grass_far"]
+        self.meadow = ["sky", "sky_far", "grass_far", "grass"]
         self.images_mountain = self.load_mountain()
         self.images_meadow = self.load_meadow()
 
