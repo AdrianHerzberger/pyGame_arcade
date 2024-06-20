@@ -12,6 +12,7 @@ class Player:
         self.running = False
         self.facing_left = False
         self.movement = False
+        self.attack_light = False
         self.inputs = GameInputs()
         self.animation = Character_Animation()
         self.y_pos = CHAR_Y_POS
@@ -22,17 +23,34 @@ class Player:
 
         if self.inputs.jumping():
             self.jumping = True
+            
         if self.jumping:
             self.y_pos -= self.inputs.jump_force
             self.inputs.jump_force -= 1
+            
             if self.y_pos >= CHAR_Y_POS:
                 self.y_pos = CHAR_Y_POS
-                self.jumping = False
                 self.inputs.jump_force = 0
+                self.jumping = False
+                
         if self.inputs.move_left_right():
             self.running = True
             self.running_direction()
+        
+        if self.inputs.attack_light():
+            self.attack_light = True
+            print(self.inputs.attack)
+            
+        self.resolve_animation_frames()
+            
         return self.y_pos
+    
+    def resolve_animation_frames(self):
+        if not self.key[pygame.K_LEFT] and not self.key[pygame.K_RIGHT] and not self.jumping:
+            self.running = False
+        if not self.key[pygame.K_COMMA] and not self.running and not self.jumping:
+            self.attack_light = False
+        
 
     def running_direction(self):
         self.key = pygame.key.get_pressed()
@@ -50,6 +68,8 @@ class Player:
             animation = self.animation.get_current_jumping_animation()
         elif self.running:
             animation = self.animation.get_current_running_animation()
+        elif self.attack_light:
+            animation = self.animation.get_current_attack_light_animation()
         else:
             animation = self.animation.get_current_idle_animation()
         if self.facing_left:

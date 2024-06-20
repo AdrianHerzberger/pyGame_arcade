@@ -6,6 +6,7 @@ class GameInputs:
         self.key = None
         self.scroll = 0
         self.jump_force = 0
+        self.attack = 0
 
     def move_left_right(self):
         self.key = pygame.key.get_pressed()
@@ -23,11 +24,12 @@ class GameInputs:
             self.jump_force -= 1
         return self.jump_force
     
-    def attack(self):
+    def attack_light(self):
         self.key = pygame.key.get_pressed()
         if self.key[pygame.K_COMMA]:
-            print(f"{self.key[pygame.K_COMMA]}, is pressed")
             self.attack += 1
+        else:
+            self.attack = 0
         return self.attack
         
 

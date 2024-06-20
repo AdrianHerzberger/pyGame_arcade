@@ -13,22 +13,31 @@ class Character_Animation:
         self.character_jumping_sheet = pygame.image.load(
             "assets/character/player/jump.png"
         )
+        self.character_idle_attack_light_sheet = pygame.image.load(
+            "assets/character/player/attack_1.png"
+        )
         self.idle_animation = []
         self.running_animation = []
         self.jumping_animation = []
+        self.attack_light_animation = []
+        
         self.idle_animation_steps = 6
         self.running_animation_steps = 8
         self.jumping_animation_steps = 8
+        self.attack_light_animation_steps = 5
+        
+        self.frame_unit = 5
         self.current_frame = 0
         self.frame_width = 128
         self.frame_height = 128
-        self.scale = 3
+
         self.animation_delay = 400
         self.last_update_time = pygame.time.get_ticks()
 
         self.load_idle_animation()
         self.load_running_animation()
         self.load_jumping_animation()
+        self.load_attack_light_animation()
 
     def load_idle_animation(self):
         for frame in range(self.idle_animation_steps):
@@ -65,7 +74,19 @@ class Character_Animation:
                 (frame * self.frame_width, 0, self.frame_width, self.frame_height),
             )
             self.jumping_animation.append(jumping_sprite)
-
+            
+    def load_attack_light_animation(self):
+        for frame in range(self.attack_light_animation_steps):
+            attack_light_sprite = pygame.Surface(
+                (self.frame_width, self.frame_height), pygame.SRCALPHA
+            )
+            attack_light_sprite.blit(
+                self.character_idle_attack_light_sheet,
+                (0, 0),
+                (frame * self.frame_width, 0, self.frame_width, self.frame_height),
+            )
+            self.attack_light_animation.append(attack_light_sprite)
+            
     def get_current_idle_animation(self):
         self.update_animation()
         return self.idle_animation[self.current_frame]
@@ -77,9 +98,14 @@ class Character_Animation:
     def get_current_jumping_animation(self):
         self.update_animation()
         return self.jumping_animation[self.current_frame]
+    
+    def get_current_attack_light_animation(self):
+        self.update_animation()
+        return self.attack_light_animation[self.current_frame]
+
 
     def update_animation(self):
         current_time = pygame.time.get_ticks()
         if current_time - self.last_update_time > self.animation_delay:
-            self.current_frame = (self.current_frame + 1) % self.idle_animation_steps
+            self.current_frame = (self.current_frame + 1) % self.frame_unit
             self.last_update_time = current_time
