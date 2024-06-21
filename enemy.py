@@ -1,4 +1,5 @@
 import pygame
+from globals import *
 
 class Enemy:
     def __init__(self, x, y):
@@ -8,11 +9,11 @@ class Enemy:
         pygame.draw.rect(screen, (0, 0, 255), self.rect)
 
     @classmethod
-    def create_enemies(cls):
+    def create_enemies(enm):
         return [
-            cls(200, 150),
-            cls(400, 150),
-            cls(600, 150)
+            enm(ENEMY_X_POS, ENEMY_Y_POS),
+            enm(ENEMY_X_POS, ENEMY_Y_POS),
+            enm(ENEMY_X_POS, ENEMY_Y_POS),
         ]
 
     @staticmethod
