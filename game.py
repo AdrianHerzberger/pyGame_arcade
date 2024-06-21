@@ -7,6 +7,7 @@ from inputs import GameInputs
 from map import World
 from character import Character_Animation
 from player import Player
+from enemy import Enemy
 
 clock = pygame.time.Clock()
 
@@ -19,7 +20,8 @@ def main():
     world = World(screen, inputs)
     player = Player()
     char = Character_Animation()
-
+    enemies = Enemy.create_enemies()
+    
     running = True
     while running:
 
@@ -29,7 +31,8 @@ def main():
 
         world.draw_meadow()
         
-        current_player = player.update()
+        Enemy.draw_all(screen, enemies)
+        current_player = player.update(enemies)
         current_character = player.get_current_animation()
         screen.blit(current_character, (CHAR_X_POS, current_player))
 
