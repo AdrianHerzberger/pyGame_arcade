@@ -16,18 +16,10 @@ class GameInputs:
             self.scroll += 5
         return self.scroll
     
-    # def jumping(self):
-    #     self.key = pygame.key.get_pressed()
-    #     if self.key[pygame.K_SPACE]:
-    #         self.jump_force += 2.2
-    #     else:
-    #         self.jump_force -= 1
-    #     return self.jump_force
-    
     def attack_light(self):
         self.key = pygame.key.get_pressed()
         if self.key[pygame.K_COMMA]:
-            self.attack += 1
+            self.attack += 10
         else:
             self.attack = 0
         return self.attack

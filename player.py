@@ -2,7 +2,8 @@ import pygame
 from pygame.locals import *
 from globals import *
 from inputs import GameInputs
-from character import Character_Animation
+from character_animations import Character_Animation
+from player_health import PlayerHealth
 from player_collision import Player_Collision
 
 
@@ -14,12 +15,15 @@ class Player:
         self.facing_left = False
         self.attack_light = False
         self.on_ground = True
+        self.is_hit = False
         self.jump_force = 0
         self.gravity = 5
+        self.x_pos = CHAR_X_POS
         self.y_pos = CHAR_Y_POS
         self.inputs = GameInputs()
         self.animation = Character_Animation()
         self.collision_handler = Player_Collision(self)
+        self.player_health = PlayerHealth(MAX_PLAYER_HEALTH)
 
     def update(self, enemies):
         self.key = pygame.key.get_pressed()
@@ -60,7 +64,18 @@ class Player:
         if not self.jumping:
             self.on_ground = self.collision_handler.player.on_ground
             self.y_pos = self.collision_handler.player.y_pos
-            
+
+        enemy_collisions = self.collision_handler.get_hits(enemies)
+        print(f"Is player colliding with enemy: {enemy_collisions}")
+
+        if enemy_collisions:
+            self.is_hit = True
+            self.player_health.taking_damage(ENEMY_DAMAGE)
+        else:
+            self.is_hit = False
+
+        if not self.player_health.is_alive():
+            print("Player is dead!")
 
     def resolve_player_inputs(self):
         self.key = pygame.key.get_pressed()
@@ -87,6 +102,8 @@ class Player:
             animation = self.animation.get_current_running_animation()
         elif self.attack_light:
             animation = self.animation.get_current_attack_light_animation()
+        elif self.is_hit:
+            animation = self.animation.get_current_hurt_animation()
         else:
             animation = self.animation.get_current_idle_animation()
 

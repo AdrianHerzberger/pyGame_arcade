@@ -5,7 +5,7 @@ from OpenGL.GLU import *
 from globals import *
 from inputs import GameInputs
 from map import World
-from character import Character_Animation
+from character_animations import Character_Animation
 from player import Player
 from enemy import Enemy
 
@@ -31,10 +31,13 @@ def main():
 
         world.draw_meadow()
         
+        player.update(enemies)
+        player_animation = player.get_current_animation()
+        screen.blit(player_animation, (player.x_pos, player.y_pos))
+
+        player.collision_handler.draw(screen)
+
         Enemy.draw_all(screen, enemies)
-        current_player = player.update(enemies)
-        current_character = player.get_current_animation()
-        screen.blit(current_character, (CHAR_X_POS, current_player))
 
         pygame.display.flip()
         pygame.time.wait(10)
