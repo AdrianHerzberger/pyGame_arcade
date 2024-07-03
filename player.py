@@ -37,10 +37,8 @@ class Player:
             self.jumping = False
             self.jump_force = 0
             self.on_ground = True
-
-        if not self.jumping and self.y_pos < CHAR_Y_POS:
+        elif self.y_pos < CHAR_Y_POS and not self.jumping:
             self.y_pos += self.gravity
-            print(f"Falling: y_pos={self.y_pos}, gravity applied")
 
         if self.inputs.move_left_right():
             self.running = True
@@ -52,7 +50,8 @@ class Player:
         self.resolve_player_inputs()
         self.handle_collisions(enemies)
         
-        print(f"End of update: y_pos={self.y_pos}, on_ground={self.on_ground}")
+        if self.y_pos == CHAR_Y_POS:
+            self.on_ground = True
     
         return self.y_pos
     
@@ -61,7 +60,6 @@ class Player:
         if not self.jumping:
             self.on_ground = self.collision_handler.player.on_ground
             self.y_pos = self.collision_handler.player.y_pos
-            print(f"Collision handled: y_pos={self.y_pos}, on_ground={self.on_ground}")
             
 
     def resolve_player_inputs(self):
@@ -72,6 +70,8 @@ class Player:
             self.attack_light = False
         if not self.key[pygame.K_SPACE]:
             self.jumping = False
+        if not self.collision_handler:
+            self.jumping = True
 
     def running_direction(self):
         self.key = pygame.key.get_pressed()
