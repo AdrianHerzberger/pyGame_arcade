@@ -60,19 +60,19 @@ class Player:
         return self.y_pos
     
     def handle_collisions(self, enemies):
-        self.collision_handler.check_collisions(enemies)
-        if not self.jumping:
-            self.on_ground = self.collision_handler.player.on_ground
-            self.y_pos = self.collision_handler.player.y_pos
-
         enemy_collisions = self.collision_handler.get_hits(enemies)
-        print(f"Is player colliding with enemy: {enemy_collisions}")
+        print(f"Is player colliding with enemy: {enemy_collisions}")  
 
         if enemy_collisions:
             self.is_hit = True
+            print(f"Player gets hit {self.is_hit}")
             self.player_health.taking_damage(ENEMY_DAMAGE)
         else:
             self.is_hit = False
+            
+        if not self.jumping:
+            self.on_ground = self.collision_handler.player.on_ground
+            self.y_pos = self.collision_handler.player.y_pos
 
         if not self.player_health.is_alive():
             print("Player is dead!")

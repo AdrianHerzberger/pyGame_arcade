@@ -5,9 +5,9 @@ from globals import *
 class Player_Collision:
     def __init__(self, player):
         self.player = player
-        self.offset_x = 35
-        self.offset_y = 50
-        self.player_collision_rect = pygame.Rect(self.player.x_pos + self.offset_x, self.player.y_pos + self.offset_y, 60, 85)
+        self.offset_x = OFFSET_X
+        self.offset_y = OFFSET_Y
+        self.player_collision_rect = pygame.Rect(self.player.x_pos + self.offset_x, self.player.y_pos + self.offset_y, 60, 90)
         
     def draw(self, screen):
         self.player_collision_rect.topleft = (self.player.x_pos + self.offset_x, self.player.y_pos + self.offset_y)
@@ -22,6 +22,7 @@ class Player_Collision:
         for enemy in enemies:
             if self.player_collision_rect.colliderect(enemy.rect):
                 collisions.append(enemy)
+        print(f"Whats is the current collision status:", collisions)
         return collisions
     
     def check_collisions_x(self, enemies):
@@ -32,12 +33,14 @@ class Player_Collision:
                     self.player_collision_rect.left = enemy.rect.right
                 else:
                     self.player_collision_rect.right = enemy.rect.left
+        self.player.x_pos = self.player_collision_rect.x - self.offset_x
     
     def check_collisions_y(self, enemies):
         self.player.on_ground = False
         self.player_collision_rect.topleft = (self.player.x_pos + self.offset_x, self.player.y_pos + self.offset_y)
-        print(f"Whhat the current y-pos={self.player_collision_rect.y}")
+        print(f"Whats the current y-pos={self.player_collision_rect.y}")
         collisions = self.get_hits(enemies)
+        print(f"Current collision status {collisions}")
         for enemy in collisions:
             if self.player_collision_rect.bottom > enemy.rect.top and self.player_collision_rect.top < enemy.rect.bottom:
                 if self.player_collision_rect.centery > enemy.rect.centery:
