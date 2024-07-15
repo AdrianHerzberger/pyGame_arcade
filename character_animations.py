@@ -31,8 +31,8 @@ class Character_Animation:
         self.jumping_animation_steps = 8
         self.attack_light_animation_steps = 5
         self.hurt_animation_steps = 2
+        self.current_animation_steps = 8
 
-        self.frame_unit = 2
         self.current_frame = 0
         self.frame_width = 128
         self.frame_height = 128
@@ -44,6 +44,7 @@ class Character_Animation:
         self.load_running_animation()
         self.load_jumping_animation()
         self.load_attack_light_animation()
+        self.load_hurt_animation()
 
     def load_idle_animation(self):
         for frame in range(self.idle_animation_steps):
@@ -105,28 +106,37 @@ class Character_Animation:
             )
             self.hurt_animation.append(hurt_sprite)
 
+    def set_current_animation(self, steps):
+        self.current_animation_steps = steps
+        self.current_frame = 0  
+
     def get_current_idle_animation(self):
+        self.set_current_animation(self.idle_animation_steps)
         self.update_animation()
         return self.idle_animation[self.current_frame]
 
     def get_current_running_animation(self):
+        self.set_current_animation(self.running_animation_steps)
         self.update_animation()
         return self.running_animation[self.current_frame]
 
     def get_current_jumping_animation(self):
+        self.set_current_animation(self.jumping_animation_steps)
         self.update_animation()
         return self.jumping_animation[self.current_frame]
 
     def get_current_attack_light_animation(self):
+        self.set_current_animation(self.attack_light_animation_steps)
         self.update_animation()
         return self.attack_light_animation[self.current_frame]
 
     def get_current_hurt_animation(self):
+        self.set_current_animation(self.hurt_animation_steps)
         self.update_animation()
         return self.hurt_animation[self.current_frame]
 
     def update_animation(self):
         current_time = pygame.time.get_ticks()
         if current_time - self.last_update_time > self.animation_delay:
-            self.current_frame = (self.current_frame + 1) % self.frame_unit
+            self.current_frame = (self.current_frame + 1) % self.current_animation_steps
             self.last_update_time = current_time

@@ -3,12 +3,13 @@ from pygame.locals import *
 from globals import *
 from inputs import GameInputs
 from character_animations import Character_Animation
-from player_health import PlayerHealth
+from player_health import Player_Health
 from player_collision import Player_Collision
+from health_bar_animations import Health_Bar_Animation
 
 
 class Player:
-    def __init__(self):
+    def __init__(self, screen):
         self.key = None
         self.jumping = False
         self.running = False
@@ -21,9 +22,10 @@ class Player:
         self.x_pos = CHAR_X_POS
         self.y_pos = CHAR_Y_POS
         self.inputs = GameInputs()
-        self.animation = Character_Animation()
+        self.character_animation = Character_Animation()
         self.collision_handler = Player_Collision(self)
-        self.player_health = PlayerHealth(MAX_PLAYER_HEALTH)
+        self.player_health = Player_Health(MAX_PLAYER_HEALTH)
+        self.player_health_animation = Health_Bar_Animation(screen)
 
     def update(self, enemies):
         self.key = pygame.key.get_pressed()
@@ -58,6 +60,9 @@ class Player:
             self.on_ground = True
     
         return self.y_pos
+    
+    def player_health_status(self):
+        pass
     
     def handle_collisions(self, enemies):
         enemy_collisions = self.collision_handler.get_hits(enemies)
@@ -97,15 +102,15 @@ class Player:
 
     def get_current_animation(self):
         if self.jumping:
-            animation = self.animation.get_current_jumping_animation()
+            animation = self.character_animation.get_current_jumping_animation()
         elif self.running:
-            animation = self.animation.get_current_running_animation()
+            animation = self.character_animation.get_current_running_animation()
         elif self.attack_light:
-            animation = self.animation.get_current_attack_light_animation()
+            animation = self.character_animation.get_current_attack_light_animation()
         elif self.is_hit:
-            animation = self.animation.get_current_hurt_animation()
+            animation = self.character_animation.get_current_hurt_animation()
         else:
-            animation = self.animation.get_current_idle_animation()
+            animation = self.character_animation.get_current_idle_animation()
 
         if self.facing_left:
             animation = pygame.transform.flip(animation, True, False)

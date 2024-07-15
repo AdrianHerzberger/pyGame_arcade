@@ -18,7 +18,7 @@ def main():
 
     inputs = GameInputs()
     world = World(screen, inputs)
-    player = Player()
+    player = Player(screen)
     char = Character_Animation()
     enemies = Enemy.create_enemies()
     
@@ -34,7 +34,7 @@ def main():
         player.update(enemies)
         player_animation = player.get_current_animation()
         screen.blit(player_animation, (player.x_pos, player.y_pos))
-
+        player.player_health_animation.draw_health_bar()
         player.collision_handler.draw(screen)
 
         Enemy.draw_all(screen, enemies)
