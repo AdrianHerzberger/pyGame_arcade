@@ -1,7 +1,6 @@
 import pygame
 from pygame.locals import *
 
-
 class Character_Animation:
     def __init__(self):
         self.character_idle_sheet = pygame.image.load(
@@ -115,9 +114,11 @@ class Character_Animation:
             self.hurt_animation.append(hurt_sprite)
 
     def set_current_animation(self, steps):
+        if self.current_animation_steps != steps:
+            self.current_frame = 0  
         self.current_animation_steps = steps
         self.animation_delay = self.base_animation_delay / self.max_steps
-        print(f"current steps animations runs={self.current_animation_steps}")
+        #print(f"current steps animations runs={self.current_animation_steps}")
 
     def get_current_idle_animation(self):
         self.set_current_animation(self.idle_animation_steps)

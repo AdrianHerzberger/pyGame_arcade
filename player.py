@@ -24,8 +24,11 @@ class Player:
         self.inputs = GameInputs()
         self.character_animation = Character_Animation()
         self.collision_handler = Player_Collision(self)
-        self.player_health = Player_Health(MAX_PLAYER_HEALTH)
+        self.player_health = Player_Health()
         self.player_health_animation = Health_Bar_Animation(screen)
+        self.player_health_meter_center = 50
+        self.player_health_meter_right = 25
+        self.player_health_meter_left = 25
 
     def update(self, enemies):
         self.key = pygame.key.get_pressed()
@@ -55,33 +58,44 @@ class Player:
 
         self.resolve_player_inputs()
         self.handle_collisions(enemies)
-        
+
         if self.y_pos == CHAR_Y_POS:
             self.on_ground = True
-    
+
         return self.y_pos
-    
-    def player_health_status(self):
-        pass
-    
+
     def handle_collisions(self, enemies):
         enemy_collisions = self.collision_handler.get_hits(enemies)
-        print(f"Is player colliding with enemy: {enemy_collisions}")  
-
+        """
+        player is currently able to take damage but not to heal.
+        Implement healing timeout 
+        """
         if enemy_collisions:
             self.is_hit = True
-            print(f"Player gets hit {self.is_hit}")
-            self.player_health.taking_damage(ENEMY_DAMAGE)
+            self.update_player_health()
         else:
             self.is_hit = False
-            
+
         if not self.jumping:
             self.on_ground = self.collision_handler.player.on_ground
             self.y_pos = self.collision_handler.player.y_pos
 
         if not self.player_health.is_alive():
             print("Player is dead!")
-
+            
+    def update_player_health(self):
+        current_health = self.player_health.taking_damage(ENEMY_DAMAGE)
+        if self.player_health_meter_center > 0:
+            self.player_health_meter_center -= 1
+        elif self.player_health_meter_right > 0:
+            self.player_health_meter_right -= 1 
+        elif self.player_health_meter_left > 0:
+            self.player_health_meter_left -= 1
+            if self.player_health_meter_center < 0:
+                self.player_health_meter_center = 0
+                self.player_health_meter_left = 0
+                self.player_health_meter_right = 0
+        
     def resolve_player_inputs(self):
         self.key = pygame.key.get_pressed()
         if not self.key[pygame.K_LEFT] and not self.key[pygame.K_RIGHT]:

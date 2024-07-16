@@ -9,8 +9,7 @@ class Health_Bar_Animation:
             "meter_icon_holder_red",
             "health_icon",
             "meter_bar_holder_left_edge_red",
-            "meter_bar_holder_center-repeating_red_1",
-            "meter_bar_holder_center-repeating_red_2",
+            "meter_bar_holder_center-repeating_red",
             "meter_bar_holder_right_edge_red",
             "meter_bar_center-repeating_red",
             "meter_bar_left_edge_red",
@@ -27,7 +26,9 @@ class Health_Bar_Animation:
                 f"assets/character/health_bar/{name}.png"
             ).convert_alpha()
             if name == "health_icon":
-                scaled_image = self.scaled_image(img, 15, 15) 
+                scaled_image = self.scaled_image(img, 15, 15)
+            elif name == "meter_bar_holder_center-repeating_red":
+                scaled_image = self.scaled_image(img, 50, 25)
             elif name == "meter_bar_center-repeating_red":
                 scaled_image = self.scaled_image(img, 50, 25)
             else:
@@ -43,8 +44,7 @@ class Health_Bar_Animation:
             "meter_icon_holder_red": (25, 25),
             "health_icon": (30, 30),
             "meter_bar_holder_left_edge_red": (50, 25),
-            "meter_bar_holder_center-repeating_red_1": (75, 25),
-            "meter_bar_holder_center-repeating_red_2": (100, 25),
+            "meter_bar_holder_center-repeating_red": (75, 25),
             "meter_bar_holder_right_edge_red": (125, 25),
             "meter_bar_center-repeating_red":(75, 25),
             "meter_bar_left_edge_red": (50, 25),
@@ -52,7 +52,18 @@ class Health_Bar_Animation:
         }
         return positions
 
-    def draw_health_bar(self):
+    def draw_health_bar(self, current_width_center, current_width_right, current_width_left):
+        self.images_health_bar["meter_bar_center-repeating_red"] = self.scaled_image(
+            self.images_health_bar["meter_bar_center-repeating_red"], current_width_center, 25
+        )
+        self.images_health_bar["meter_bar_right_edge_red"] = self.scaled_image(
+            self.images_health_bar["meter_bar_right_edge_red"], current_width_right, 25
+        )
+        self.images_health_bar["meter_bar_left_edge_red"] = self.scaled_image(
+            self.images_health_bar["meter_bar_left_edge_red"], current_width_left, 25
+        )
+        self.health_bar_positions["meter_bar_right_edge_red"] = (75 + current_width_center, 25)
+        
         for name in self.health_bar:
             img = self.images_health_bar[name]
             pos = self.health_bar_positions[name]

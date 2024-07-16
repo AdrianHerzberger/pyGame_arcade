@@ -22,7 +22,7 @@ class Player_Collision:
         for enemy in enemies:
             if self.player_collision_rect.colliderect(enemy.rect):
                 collisions.append(enemy)
-        print(f"Whats is the current collision status:", collisions)
+        #print(f"Whats is the current collision status:", collisions)
         return collisions
     
     def check_collisions_x(self, enemies):
@@ -38,9 +38,9 @@ class Player_Collision:
     def check_collisions_y(self, enemies):
         self.player.on_ground = False
         self.player_collision_rect.topleft = (self.player.x_pos + self.offset_x, self.player.y_pos + self.offset_y)
-        print(f"Whats the current y-pos={self.player_collision_rect.y}")
+        #print(f"Whats the current y-pos={self.player_collision_rect.y}")
         collisions = self.get_hits(enemies)
-        print(f"Current collision status {collisions}")
+        #print(f"Current collision status {collisions}")
         for enemy in collisions:
             if self.player_collision_rect.bottom > enemy.rect.top and self.player_collision_rect.top < enemy.rect.bottom:
                 if self.player_collision_rect.centery > enemy.rect.centery:
