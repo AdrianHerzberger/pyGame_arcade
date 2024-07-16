@@ -16,11 +16,11 @@ class Enemy:
         pygame.draw.rect(screen, (0, 0, 255), self.rect)
 
     @classmethod
-    def create_enemies(cls):
+    def create_enemies(enm):
         return [
-            cls(random.randint(0, SCREEN_WIDTH), ENEMY_Y_POS),
-            cls(random.randint(0, SCREEN_WIDTH), ENEMY_Y_POS),
-            cls(random.randint(0, SCREEN_WIDTH), ENEMY_Y_POS),
+            enm(random.randint(0, SCREEN_WIDTH), ENEMY_Y_POS),
+            enm(random.randint(0, SCREEN_WIDTH), ENEMY_Y_POS),
+            enm(random.randint(0, SCREEN_WIDTH), ENEMY_Y_POS),
         ]
         
     def update(self):

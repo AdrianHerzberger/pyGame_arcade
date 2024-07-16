@@ -40,7 +40,6 @@ def main():
         Enemy.draw_all(screen, enemies)
 
         pygame.display.flip()
-        pygame.time.wait(10)
         clock.tick(FPS)
 
         pygame.display.update()

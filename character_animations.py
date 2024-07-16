@@ -31,14 +31,22 @@ class Character_Animation:
         self.jumping_animation_steps = 8
         self.attack_light_animation_steps = 5
         self.hurt_animation_steps = 2
-        self.current_animation_steps = 8
 
+        self.max_steps = max(
+            self.idle_animation_steps,
+            self.running_animation_steps,
+            self.jumping_animation_steps,
+            self.attack_light_animation_steps,
+            self.hurt_animation_steps,
+        )
+        
+        self.current_animation_steps = 8
         self.current_frame = 0
+        self.base_animation_delay = 800
+        self.last_update_time = pygame.time.get_ticks()
+
         self.frame_width = 128
         self.frame_height = 128
-
-        self.animation_delay = 400
-        self.last_update_time = pygame.time.get_ticks()
 
         self.load_idle_animation()
         self.load_running_animation()
@@ -108,7 +116,8 @@ class Character_Animation:
 
     def set_current_animation(self, steps):
         self.current_animation_steps = steps
-        self.current_frame = 0  
+        self.animation_delay = self.base_animation_delay / self.max_steps
+        print(f"current steps animations runs={self.current_animation_steps}")
 
     def get_current_idle_animation(self):
         self.set_current_animation(self.idle_animation_steps)
