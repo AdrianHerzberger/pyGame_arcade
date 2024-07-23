@@ -118,7 +118,6 @@ class Character_Animation:
             self.current_frame = 0  
         self.current_animation_steps = steps
         self.animation_delay = self.base_animation_delay / self.max_steps
-        #print(f"current steps animations runs={self.current_animation_steps}")
 
     def get_current_idle_animation(self):
         self.set_current_animation(self.idle_animation_steps)

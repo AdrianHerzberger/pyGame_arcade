@@ -19,7 +19,6 @@ def main():
     inputs = GameInputs()
     world = World(screen, inputs)
     player = Player(screen)
-    char = Character_Animation()
     enemies = Enemy.create_enemies()
     
     running = True
