@@ -17,17 +17,16 @@ class World:
     def load_mountain(self):
         imgs = {}
         for name in self.mountain:
-            imgs[name] = pygame.image.load(
-                f"assets/terrain/mountain/{name}.png"
-            ).convert_alpha()
+            imgs[name] = pygame.image.load(f"assets/terrain/mountain/{name}.png").convert_alpha()
         return imgs
 
     def load_meadow(self):
         imgs = {}
         for name in self.meadow:
-            imgs[name] = pygame.image.load(
-                f"assets/terrain/meadow/{name}.png"
-            ).convert_alpha()
+            img = pygame.image.load(f"assets/terrain/meadow/{name}.png").convert_alpha()
+            if name in ["sky", "sky_far", "grass_far", "grass"]:
+                img = pygame.transform.scale(img, (img.get_width(), img.get_height() * 2))
+            imgs[name] = img
         return imgs
 
     def draw_mountain(self):

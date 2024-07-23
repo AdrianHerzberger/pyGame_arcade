@@ -13,14 +13,18 @@ class Enemy:
         self.enm_range_max = random.randint(SCREEN_WIDTH // 2, SCREEN_WIDTH)
         self.speed = 1
         self.direction = 1
-        self.rect = pygame.Rect(x, y, 128, 128)
+        self.scale_factor = 0.8  
+        self.original_size = (128, 128)
+        self.scaled_size = (int(self.original_size[0] * self.scale_factor), int(self.original_size[1] * self.scale_factor))
+        self.rect = pygame.Rect(x, y, *self.scaled_size)
         self.enemy_animations = Enemy_Animations()
 
-    def draw(self, screen):
+    def draw(self, screen, camera):
         animation = self.enemy_animations.get_current_walking_animation()
+        scaled_animation = pygame.transform.scale(animation, self.scaled_size)
         if self.facing_left:
-            animation = pygame.transform.flip(animation, True, False)
-        screen.blit(animation, self.rect.topleft)
+            scaled_animation = pygame.transform.flip(scaled_animation, True, False)
+        screen.blit(scaled_animation, camera.apply(self.rect.topleft))
 
     @classmethod
     def create_enemies(enm):
@@ -45,7 +49,7 @@ class Enemy:
         self.rect.x = self.enm_x_pos
 
     @staticmethod
-    def draw_all(screen, enemies):
+    def draw_all(screen, enemies, camera):
         for enemy in enemies:
             enemy.update()
-            enemy.draw(screen)
+            enemy.draw(screen, camera)

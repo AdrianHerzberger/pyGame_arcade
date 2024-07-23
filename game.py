@@ -8,6 +8,7 @@ from map import World
 from character_animations import Character_Animation
 from player import Player
 from enemy import Enemy
+from camera import Camera
 
 clock = pygame.time.Clock()
 
@@ -20,6 +21,7 @@ def main():
     world = World(screen, inputs)
     player = Player(screen)
     enemies = Enemy.create_enemies()
+    camera = Camera(SCREEN_WIDTH, SCREEN_HEIGHT)
     
     running = True
     while running:
@@ -27,16 +29,17 @@ def main():
         for event in pygame.event.get():
             if event.type == QUIT:
                 running = False
-
+                
+        player.update(enemies)
+        camera.update(player.x_pos)
         world.draw_meadow()
         
-        player.update(enemies)
         player_animation = player.get_current_animation()
         screen.blit(player_animation, (player.x_pos, player.y_pos))
         player.player_health_animation.draw_health_bar(player.player_health_meter_center, player.player_health_meter_right, player.player_health_meter_left)
         player.collision_handler.draw(screen)
 
-        Enemy.draw_all(screen, enemies)
+        Enemy.draw_all(screen, enemies, camera)
 
         pygame.display.flip()
         clock.tick(FPS)

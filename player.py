@@ -35,7 +35,7 @@ class Player:
         if self.key[pygame.K_SPACE] and self.on_ground:
             self.jumping = True
             self.on_ground = False
-            self.jump_force = 30
+            self.jump_force = 45
 
         if self.jumping:
             self.y_pos -= self.jump_force
