@@ -117,6 +117,16 @@ class Player:
             self.facing_left = False
 
     def get_current_animation(self):
+        if self.is_dead:
+            if not self.dead_animation_played:
+                animation = self.character_animation.get_current_dead_animation()
+                if self.facing_left:
+                    animation = pygame.transform.flip(animation, True, False)
+                    self.dead_animation_played = True
+                return animation    
+            else:
+                return self.character_animation.get_dead_static_frame()
+    
         if self.jumping:
             animation = self.character_animation.get_current_jumping_animation()
         elif self.running:
