@@ -39,8 +39,7 @@ class World:
             for i in range(tiles):
                 self.screen.blit(img, (i * bg_width, 0))
 
-    def draw_meadow(self):
-        scroll = self.inputs.move_left_right()
+    def draw_meadow(self, scroll):
         for name in self.meadow:
             img = self.images_meadow[name]
             bg_width = img.get_width()

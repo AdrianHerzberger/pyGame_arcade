@@ -55,6 +55,9 @@ class Player:
 
         if self.inputs.attack_light():
             self.attack_light = True
+            self.kill_enemy()
+        else:
+            self.attack_light = False
 
         self.resolve_player_inputs()
         self.handle_collisions(enemies)
@@ -63,6 +66,11 @@ class Player:
             self.on_ground = True
 
         return self.y_pos
+    
+    def kill_enemy(self):
+        pass
+        
+        
 
     def handle_collisions(self, enemies):
         enemy_collisions = self.collision_handler.get_hits(enemies)

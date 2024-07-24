@@ -31,15 +31,15 @@ def main():
                 running = False
                 
         player.update(enemies)
-        camera.update(player.x_pos)
-        world.draw_meadow()
+        scroll = inputs.move_left_right()
+        world.draw_meadow(scroll)
         
         player_animation = player.get_current_animation()
         screen.blit(player_animation, (player.x_pos, player.y_pos))
         player.player_health_animation.draw_health_bar(player.player_health_meter_center, player.player_health_meter_right, player.player_health_meter_left)
         player.collision_handler.draw(screen)
 
-        Enemy.draw_all(screen, enemies, camera)
+        Enemy.draw_all(screen, enemies, scroll)
 
         pygame.display.flip()
         clock.tick(FPS)
