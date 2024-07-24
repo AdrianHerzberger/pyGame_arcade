@@ -16,11 +16,13 @@ class Player:
         self.attack_light = False
         self.on_ground = True
         self.is_hit = False
+        self.is_dead = False
+        self.dead_animation_played = False
         self.jump_force = 0
         self.gravity = 5
         self.x_pos = CHAR_X_POS
         self.y_pos = CHAR_Y_POS
-        self.inputs = GameInputs()
+        self.inputs = GameInputs(self)
         self.character_animation = Character_Animation()
         self.collision_handler = Player_Collision(self)
         self.player_health = Player_Health()
@@ -30,6 +32,9 @@ class Player:
         self.player_health_meter_left = 25
 
     def update(self, enemies, scroll):
+        if self.is_dead:
+            return 
+        
         self.key = pygame.key.get_pressed()
         if self.key[pygame.K_SPACE] and self.on_ground:
             self.jumping = True
@@ -83,7 +88,7 @@ class Player:
             self.y_pos = self.collision_handler.player.y_pos
 
         if not self.player_health.is_alive():
-            print("Player is dead!")
+            self.is_dead = True
             
     def update_player_health(self):
         current_health = self.player_health.taking_damage(ENEMY_DAMAGE)

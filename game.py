@@ -17,26 +17,30 @@ def main():
     pygame.init()
     screen = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
 
-    inputs = GameInputs()
-    world = World(screen, inputs)
     player = Player(screen)
+    inputs = GameInputs(player)
+    world = World(screen, inputs)
     enemies = Enemy.create_enemies()
     camera = Camera(SCREEN_WIDTH, SCREEN_HEIGHT)
-    
+
     running = True
     while running:
 
         for event in pygame.event.get():
             if event.type == QUIT:
                 running = False
-                
+
         scroll = inputs.move_left_right()
-        player.update(enemies, scroll)  
+        player.update(enemies, scroll)
         world.draw_meadow(scroll)
-        
+
         player_animation = player.get_current_animation()
         screen.blit(player_animation, (player.x_pos, player.y_pos))
-        player.player_health_animation.draw_health_bar(player.player_health_meter_center, player.player_health_meter_right, player.player_health_meter_left)
+        player.player_health_animation.draw_health_bar(
+            player.player_health_meter_center,
+            player.player_health_meter_right,
+            player.player_health_meter_left,
+        )
         player.collision_handler.draw(screen)
 
         Enemy.draw_all(screen, enemies, scroll)
@@ -48,5 +52,6 @@ def main():
 
     pygame.quit()
 
-if __name__ == '__main__':
+
+if __name__ == "__main__":
     main()
