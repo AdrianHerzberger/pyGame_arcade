@@ -7,7 +7,6 @@ from player_health import Player_Health
 from player_collision import Player_Collision
 from health_bar_animations import Health_Bar_Animation
 
-
 class Player:
     def __init__(self, screen):
         self.key = None
@@ -30,7 +29,7 @@ class Player:
         self.player_health_meter_right = 25
         self.player_health_meter_left = 25
 
-    def update(self, enemies):
+    def update(self, enemies, scroll):
         self.key = pygame.key.get_pressed()
         if self.key[pygame.K_SPACE] and self.on_ground:
             self.jumping = True
@@ -60,7 +59,7 @@ class Player:
             self.attack_light = False
 
         self.resolve_player_inputs()
-        self.handle_collisions(enemies)
+        self.handle_collisions(enemies, scroll)
 
         if self.y_pos == CHAR_Y_POS:
             self.on_ground = True
@@ -69,16 +68,11 @@ class Player:
     
     def kill_enemy(self):
         pass
-        
-        
 
-    def handle_collisions(self, enemies):
-        enemy_collisions = self.collision_handler.get_hits(enemies)
-        """
-        player is currently able to take damage but not to heal.
-        Implement healing timeout 
-        """
+    def handle_collisions(self, enemies, scroll):
+        enemy_collisions = self.collision_handler.get_hits(enemies, scroll)
         if enemy_collisions:
+            print("Player hit!") 
             self.is_hit = True
             self.update_player_health()
         else:

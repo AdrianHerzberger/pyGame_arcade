@@ -30,8 +30,8 @@ def main():
             if event.type == QUIT:
                 running = False
                 
-        player.update(enemies)
         scroll = inputs.move_left_right()
+        player.update(enemies, scroll)  
         world.draw_meadow(scroll)
         
         player_animation = player.get_current_animation()

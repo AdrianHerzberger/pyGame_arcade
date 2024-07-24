@@ -26,6 +26,7 @@ class Enemy:
     def update(self):
         self.enm_x_pos += self.speed * self.direction
         self.enemy_collision_rect.topleft = (self.enm_x_pos, self.enm_y_pos)
+        print(f"Enemy updated position: {self.enm_x_pos}, {self.enm_y_pos}")
 
         if self.enm_x_pos > self.enm_range_max:
             self.enm_x_pos = self.enm_range_max
