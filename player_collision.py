@@ -16,7 +16,7 @@ class Player_Collision:
         
     def draw_attack_collision_rect(self, screen):
         if self.player.facing_left:
-            self.attack_collision_rect.topleft = (self.player.x_pos - self.attack_collision_rect.width, self.player.y_pos)
+            self.attack_collision_rect.topleft = (self.player.x_pos - 10, self.player.y_pos + 80)
         else:
             self.attack_collision_rect.topleft = (self.player.x_pos + 70, self.player.y_pos + 80) 
         
@@ -41,7 +41,7 @@ class Player_Collision:
         collisions = []
         for enemy in enemies:
             enemy_rect = pygame.Rect(enemy.enm_x_pos - scroll, enemy.enm_y_pos, enemy.enemy_collision_rect.width, enemy.enemy_collision_rect.height)
-            if self.player_collision_rect.colliderect(enemy_rect):  
+            if self.attack_collision_rect.colliderect(enemy_rect):  
                 collisions.append(enemy)
         return collisions
 

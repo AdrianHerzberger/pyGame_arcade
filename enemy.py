@@ -29,7 +29,7 @@ class Enemy:
     def update(self):
         if self.player_kill.enemy_health.current_health == 0:
             self.is_dead = True
-            print(f"Status enemy dead flag: {self.is_dead}")
+            #print(f"Status enemy dead flag: {self.is_dead}")
             
         if not self.is_dead:
             self.enm_x_pos += self.speed * self.direction
@@ -48,7 +48,6 @@ class Enemy:
     def draw(self, screen, scroll):
         if self.is_dead:
             animation = self.enemy_animations.get_current_dead_animation()
-            print(f"What happen to the enemy dead animation frames: {animation}")
             animation = pygame.transform.scale(animation, self.scaled_size)
             if self.facing_left:
                 animation = pygame.transform.flip(animation, True, False)

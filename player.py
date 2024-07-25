@@ -75,17 +75,17 @@ class Player:
         player_hit_enemies = self.collision_handler.get_attack_hits(enemies, scroll)
         for enemy in player_hit_enemies:
             enemy_health = enemy.player_kill.enemy_health.taking_damage(PLAYER_DAMAGE)
-            print(f"Enemy {enemy} is taking damage: {enemy_health}")
+            #print(f"Enemy {enemy} is taking damage: {enemy_health}")
             if enemy_health <= 0:
                 enemy.is_dead = True
-                print(f"Enemy {enemy} is dead.")
+                #print(f"Enemy {enemy} is dead.")
 
     def handle_collisions(self, enemies, scroll):
         alive_enemies = self.is_enemy_alive(enemies)
 
         enemy_collisions = self.collision_handler.get_hits(alive_enemies, scroll)
         if enemy_collisions:
-            # print("Player hit!")
+            #print("Player hit!")
             self.is_hit = True
             self.update_player_health()
         else:
