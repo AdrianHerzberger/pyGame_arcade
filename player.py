@@ -8,7 +8,6 @@ from player_health import Player_Health
 from enemy_health import Enemy_Health
 from player_collision import Player_Collision
 
-
 class Player:
     def __init__(self, screen):
         self.key = None
@@ -35,8 +34,7 @@ class Player:
         self.player_health_meter_left = 25
 
     def update(self, enemies, scroll):
-        self.key = pygame.key.get_pressed()
-        if self.key[pygame.K_SPACE] and self.on_ground:
+        if self.inputs.is_jumping():
             self.jumping = True
             self.on_ground = False
             self.jump_force = 45
@@ -57,7 +55,7 @@ class Player:
             self.running = True
             self.running_direction()
 
-        if self.inputs.attack_light():
+        if self.inputs.is_attacking_light():
             self.attack_light = True
             self.kill_enemy(enemies, scroll)
         else:
@@ -75,17 +73,14 @@ class Player:
         player_hit_enemies = self.collision_handler.get_attack_hits(enemies, scroll)
         for enemy in player_hit_enemies:
             enemy_health = enemy.player_kill.enemy_health.taking_damage(PLAYER_DAMAGE)
-            #print(f"Enemy {enemy} is taking damage: {enemy_health}")
             if enemy_health <= 0:
                 enemy.is_dead = True
-                #print(f"Enemy {enemy} is dead.")
 
     def handle_collisions(self, enemies, scroll):
         alive_enemies = self.is_enemy_alive(enemies)
 
         enemy_collisions = self.collision_handler.get_hits(alive_enemies, scroll)
         if enemy_collisions:
-            #print("Player hit!")
             self.is_hit = True
             self.update_player_health()
         else:
@@ -99,10 +94,7 @@ class Player:
             self.is_dead = True
 
     def is_enemy_alive(self, enemies):
-        alive_enemies = []
-        for enemy in enemies:
-            if not enemy.is_dead:
-                alive_enemies.append(enemy)
+        alive_enemies = [enemy for enemy in enemies if not enemy.is_dead]
         return alive_enemies
 
     def update_player_health(self):
@@ -121,9 +113,9 @@ class Player:
 
     def resolve_player_inputs(self):
         self.key = pygame.key.get_pressed()
-        if not self.key[pygame.K_LEFT] and not self.key[pygame.K_RIGHT]:
+        if not self.inputs.is_running():
             self.running = False
-        if not self.key[pygame.K_COMMA]:
+        if not self.inputs.is_attacking_light():
             self.attack_light = False
         if not self.key[pygame.K_SPACE]:
             self.jumping = False
@@ -131,7 +123,7 @@ class Player:
             self.jumping = True
 
     def running_direction(self):
-        self.key = pygame.key.get_pressed()
+        self.key = self.inputs.get_key_presses()
         if self.key[pygame.K_LEFT]:
             self.facing_left = True
         elif self.key[pygame.K_RIGHT]:
