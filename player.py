@@ -3,9 +3,10 @@ from pygame.locals import *
 from globals import *
 from inputs import GameInputs
 from character_animations import Character_Animation
-from player_health import Player_Health
-from player_collision import Player_Collision
 from health_bar_animations import Health_Bar_Animation
+from player_health import Player_Health
+from enemy_health import Enemy_Health
+from player_collision import Player_Collision
 
 class Player:
     def __init__(self, screen):
@@ -20,21 +21,19 @@ class Player:
         self.dead_animation_played = False
         self.jump_force = 0
         self.gravity = 5
-        self.x_pos = CHAR_X_POS
-        self.y_pos = CHAR_Y_POS
+        self.x_pos = PLAYER_X_POS
+        self.y_pos = PLAYER_Y_POS
         self.inputs = GameInputs(self)
         self.character_animation = Character_Animation()
         self.collision_handler = Player_Collision(self)
         self.player_health = Player_Health()
+        self.enemy_health = Enemy_Health()
         self.player_health_animation = Health_Bar_Animation(screen)
         self.player_health_meter_center = 50
         self.player_health_meter_right = 25
         self.player_health_meter_left = 25
 
     def update(self, enemies, scroll):
-        if self.is_dead:
-            return 
-        
         self.key = pygame.key.get_pressed()
         if self.key[pygame.K_SPACE] and self.on_ground:
             self.jumping = True
@@ -45,12 +44,12 @@ class Player:
             self.y_pos -= self.jump_force
             self.jump_force -= self.gravity
 
-        if self.y_pos >= CHAR_Y_POS:
-            self.y_pos = CHAR_Y_POS
+        if self.y_pos >= PLAYER_Y_POS:
+            self.y_pos = PLAYER_Y_POS
             self.jumping = False
             self.jump_force = 0
             self.on_ground = True
-        elif self.y_pos < CHAR_Y_POS and not self.jumping:
+        elif self.y_pos < PLAYER_Y_POS and not self.jumping:
             self.y_pos += self.gravity
 
         if self.inputs.move_left_right():
@@ -59,25 +58,32 @@ class Player:
 
         if self.inputs.attack_light():
             self.attack_light = True
-            self.kill_enemy()
+            self.kill_enemy(enemies, scroll)
         else:
             self.attack_light = False
 
         self.resolve_player_inputs()
         self.handle_collisions(enemies, scroll)
 
-        if self.y_pos == CHAR_Y_POS:
-            self.on_ground = True
+        if self.y_pos == PLAYER_Y_POS:
+            self.on_ground = True    
 
         return self.y_pos
     
-    def kill_enemy(self):
-        pass
+    def kill_enemy(self, enemies, scroll):
+        player_hit_enemies = self.collision_handler.get_attack_hits(enemies, scroll)
+        for enemy in player_hit_enemies:
+            enemy_health = enemy.player_kill.enemy_health.taking_damage(PLAYER_DAMAGE)
+            print(f"Enemy {enemy} is taking damage: {enemy_health}")
+            if enemy_health <= 0:
+                enemy.is_dead = True
+                print(f"Enemy {enemy} is dead.")
+            
 
     def handle_collisions(self, enemies, scroll):
         enemy_collisions = self.collision_handler.get_hits(enemies, scroll)
         if enemy_collisions:
-            print("Player hit!") 
+            #print("Player hit!") 
             self.is_hit = True
             self.update_player_health()
         else:
@@ -91,7 +97,7 @@ class Player:
             self.is_dead = True
             
     def update_player_health(self):
-        current_health = self.player_health.taking_damage(ENEMY_DAMAGE)
+        current_player_health = self.player_health.taking_damage(ENEMY_DAMAGE)
         if self.player_health_meter_center > 0:
             self.player_health_meter_center -= 1
         elif self.player_health_meter_right > 0:

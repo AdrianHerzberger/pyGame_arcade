@@ -8,10 +8,20 @@ class Player_Collision:
         self.offset_x = OFFSET_X
         self.offset_y = OFFSET_Y
         self.player_collision_rect = pygame.Rect(self.player.x_pos + self.offset_x, self.player.y_pos + self.offset_y, 60, 90)
+        self.attack_collision_rect = pygame.Rect(self.player.x_pos + self.offset_x, self.player.y_pos + self.offset_y, 75, 25)
         
     def draw(self, screen):
         self.player_collision_rect.topleft = (self.player.x_pos + self.offset_x, self.player.y_pos + self.offset_y)
         pygame.draw.rect(screen, (0, 255, 0), self.player_collision_rect, 2)
+        
+    def draw_attack_collision_rect(self, screen):
+        if self.player.facing_left:
+            self.attack_collision_rect.topleft = (self.player.x_pos - self.attack_collision_rect.width, self.player.y_pos)
+        else:
+            self.attack_collision_rect.topleft = (self.player.x_pos + 70, self.player.y_pos + 80) 
+        
+        if self.player.attack_light:
+            pygame.draw.rect(screen, (255, 0, 0), self.attack_collision_rect, 2)
     
     def check_collisions(self, enemies):
         self.check_collisions_x(enemies)
@@ -21,10 +31,18 @@ class Player_Collision:
         collisions = []
         for enemy in enemies:
             enemy_rect = pygame.Rect(enemy.enm_x_pos - scroll, enemy.enm_y_pos, enemy.enemy_collision_rect.width, enemy.enemy_collision_rect.height)
-            print(f"Player Rect: {self.player_collision_rect}, Enemy Rect: {enemy_rect}")  
+            #print(f"Player Rect: {self.player_collision_rect}, Enemy Rect: {enemy_rect}")  
             if self.player_collision_rect.colliderect(enemy_rect):  
                 collisions.append(enemy)
-        print(f"Current collision status: {collisions}")
+        #print(f"Current collision status: {collisions}")
+        return collisions
+    
+    def get_attack_hits(self, enemies, scroll):
+        collisions = []
+        for enemy in enemies:
+            enemy_rect = pygame.Rect(enemy.enm_x_pos - scroll, enemy.enm_y_pos, enemy.enemy_collision_rect.width, enemy.enemy_collision_rect.height)
+            if self.player_collision_rect.colliderect(enemy_rect):  
+                collisions.append(enemy)
         return collisions
 
     def check_collisions_x(self, enemies, scroll):
@@ -41,9 +59,9 @@ class Player_Collision:
     def check_collisions_y(self, enemies, scroll):
         self.player.on_ground = False
         self.player_collision_rect.topleft = (self.player.x_pos + self.offset_x - scroll, self.player.y_pos + self.offset_y)
-        print(f"Current y-pos: {self.player_collision_rect.y}")
+        #print(f"Current y-pos: {self.player_collision_rect.y}")
         collisions = self.get_hits(enemies, scroll)
-        print(f"Current collision status: {collisions}")
+        #print(f"Current collision status: {collisions}")
         for enemy in collisions:
             enemy_rect = pygame.Rect(enemy.enm_x_pos - scroll, enemy.enm_y_pos, enemy.enemy_collision_rect.width, enemy.enemy_collision_rect.height)
             if self.player_collision_rect.bottom > enemy_rect.top and self.player_collision_rect.top < enemy_rect.bottom:  

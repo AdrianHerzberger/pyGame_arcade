@@ -42,6 +42,7 @@ def main():
             player.player_health_meter_left,
         )
         player.collision_handler.draw(screen)
+        player.collision_handler.draw_attack_collision_rect(screen)
 
         Enemy.draw_all(screen, enemies, scroll)
 
