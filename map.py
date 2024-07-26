@@ -9,7 +9,7 @@ class World:
     def __init__(self, screen, inputs):
         self.screen = screen
         self.inputs = inputs
-        self.mountain = ["sky", "rocks"]
+        self.mountain = ["sky", "rock", "grass_far", "grass"]
         self.meadow = ["sky", "sky_far", "grass_far", "grass"]
         self.images_mountain = self.load_mountain()
         self.images_meadow = self.load_meadow()
@@ -17,7 +17,10 @@ class World:
     def load_mountain(self):
         imgs = {}
         for name in self.mountain:
-            imgs[name] = pygame.image.load(f"assets/terrain/mountain/{name}.png").convert_alpha()
+            img = pygame.image.load(f"assets/terrain/mountain/{name}.png").convert_alpha()
+            if name in ["sky", "rock", "grass_far", "grass"]:
+                img = pygame.transform.scale(img, (img.get_width(), img.get_height() * 2))
+            imgs[name] = img
         return imgs
 
     def load_meadow(self):
@@ -29,15 +32,21 @@ class World:
             imgs[name] = img
         return imgs
 
-    def draw_mountain(self):
+    def draw_mountain(self, scroll, start_position):
         for name in self.mountain:
             img = self.images_mountain[name]
             bg_width = img.get_width()
             bg_height = img.get_height()
             tiles = math.ceil(SCREEN_WIDTH / bg_width)
+            print(f"display tiles0{tiles}")
 
             for i in range(tiles):
-                self.screen.blit(img, (i * bg_width, 0))
+                x_position = (start_position - (i * bg_width + bg_width) - scroll)
+                print(f"x pos={x_position}")
+
+                if x_position < -bg_width:
+                    continue
+                self.screen.blit(img, (x_position, 0))
 
     def draw_meadow(self, scroll):
         for name in self.meadow:
@@ -47,6 +56,16 @@ class World:
             tiles = math.ceil(SCREEN_WIDTH / bg_width)
 
             for l in range(tiles):
-                speed = 1
-                self.screen.blit(img, ((l * bg_width) - (scroll * speed), 0))
-                speed += 0.2
+                x_position = (l * bg_width) - scroll
+                self.screen.blit(img, (x_position, 0))
+
+    def draw_world(self, scroll):
+        meadow_width = self.images_meadow[self.meadow[0]].get_width() * len(self.meadow)
+        print(f"scroll pos={meadow_width}")
+        if scroll <= 100:
+            self.draw_meadow(scroll)
+        else:
+            self.draw_meadow(scroll)
+            start_position = meadow_width
+            self.draw_mountain(scroll, start_position)
+
