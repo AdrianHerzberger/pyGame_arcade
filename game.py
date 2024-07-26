@@ -32,7 +32,7 @@ def main():
 
         scroll = inputs.move_left_right()
         player.update(enemies, scroll)
-        world.draw_meadow(scroll)
+        world.draw_world(scroll)
 
         player_animation = player.get_current_animation()
         screen.blit(player_animation, (player.x_pos, player.y_pos))
