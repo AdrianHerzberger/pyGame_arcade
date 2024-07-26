@@ -34,7 +34,7 @@ class Player:
         self.player_health_meter_right = 25
         self.player_health_meter_left = 25
 
-    def update(self, enemies, scroll):
+    def update(self, enemies, bottles, scroll):
         if self.inputs.is_jumping():
             self.jumping = True
             self.on_ground = False
@@ -70,12 +70,21 @@ class Player:
 
         self.resolve_player_inputs()
         self.handle_collisions(enemies, scroll)
+        self.collect_health_bottles(bottles, scroll)
 
         if self.y_pos == PLAYER_Y_POS:
             self.on_ground = True
 
         return self.y_pos
+    
+    def collect_health_bottles(self, bottles, scroll):
+        bottle_collisions = self.collision_handler.get_bottle_hits(bottles, scroll)
+        for bottle in bottle_collisions:
+            if bottle_collisions:
+                bottle.is_bottle_collected = True
+                print(f"The collision with a bottle is={bottle.is_bottle_collected}")
 
+    
     def kill_enemy(self, enemies, scroll):
         player_hit_enemies = self.collision_handler.get_attack_hits(enemies, scroll)
         for enemy in player_hit_enemies:

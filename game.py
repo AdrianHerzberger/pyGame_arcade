@@ -8,7 +8,7 @@ from map import World
 from character_animations import Character_Animation
 from player import Player
 from enemy import Enemy
-from collectables import Collectables
+from collectables import Health_Bottles
 from camera import Camera
 
 clock = pygame.time.Clock()
@@ -22,7 +22,7 @@ def main():
     inputs = GameInputs(player)
     world = World(screen, inputs)
     enemies = Enemy.create_enemies()
-    bottles = Collectables.create_bottles()
+    bottles = Health_Bottles.create_bottles()
     camera = Camera(SCREEN_WIDTH, SCREEN_HEIGHT)
 
     running = True
@@ -33,7 +33,7 @@ def main():
                 running = False
 
         scroll = inputs.move_left_right()
-        player.update(enemies, scroll)
+        player.update(enemies, bottles, scroll)
         world.draw_world(scroll)
 
         player_animation = player.get_current_animation()
@@ -47,7 +47,7 @@ def main():
         player.collision_handler.draw_attack_collision_rect(screen)
 
         Enemy.draw_enemies(screen, enemies, scroll)
-        Collectables.draw_health_bottles(screen, bottles, scroll)
+        Health_Bottles.draw_health_bottles(screen, bottles, scroll)
 
         pygame.display.flip()
         clock.tick(FPS)

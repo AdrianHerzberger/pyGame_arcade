@@ -44,7 +44,15 @@ class Player_Collision:
             if self.attack_collision_rect.colliderect(enemy_rect):  
                 collisions.append(enemy)
         return collisions
-
+    
+    def get_bottle_hits(self, bottles, scroll):
+        collisions = []
+        for bottle in bottles:
+            bottle_rect = pygame.Rect(bottle.bottle_x_pos - scroll, bottle.bottle_y_pos, bottle.bottle_collision_rect.width, bottle.bottle_collision_rect.height)
+            if self.player_collision_rect.colliderect(bottle_rect):  
+                collisions.append(bottle)
+        return collisions
+            
     def check_collisions_x(self, enemies, scroll):
         collisions = self.get_hits(enemies, scroll)
         for enemy in collisions:

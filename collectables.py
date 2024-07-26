@@ -5,7 +5,7 @@ from globals import *
 from player import Player
 
 
-class Collectables:
+class Health_Bottles:
     def __init__(self, x, y):
         self.heath_bottle_sheet = pygame.image.load("assets/collectables/health.png")
 
