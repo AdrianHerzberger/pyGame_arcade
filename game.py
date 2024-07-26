@@ -8,6 +8,7 @@ from map import World
 from character_animations import Character_Animation
 from player import Player
 from enemy import Enemy
+from collectables import Collectables
 from camera import Camera
 
 clock = pygame.time.Clock()
@@ -21,6 +22,7 @@ def main():
     inputs = GameInputs(player)
     world = World(screen, inputs)
     enemies = Enemy.create_enemies()
+    bottles = Collectables.create_bottles()
     camera = Camera(SCREEN_WIDTH, SCREEN_HEIGHT)
 
     running = True
