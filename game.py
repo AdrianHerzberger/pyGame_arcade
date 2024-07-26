@@ -44,7 +44,8 @@ def main():
         player.collision_handler.draw(screen)
         player.collision_handler.draw_attack_collision_rect(screen)
 
-        Enemy.draw_all(screen, enemies, scroll)
+        Enemy.draw_enemies(screen, enemies, scroll)
+        Collectables.draw_health_bottles(screen, bottles, scroll)
 
         pygame.display.flip()
         clock.tick(FPS)

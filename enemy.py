@@ -81,7 +81,7 @@ class Enemy:
         ]
 
     @staticmethod
-    def draw_all(screen, enemies, scroll):
+    def draw_enemies(screen, enemies, scroll):
         for enemy in enemies:
             enemy.update()
             enemy.draw(screen, scroll)
