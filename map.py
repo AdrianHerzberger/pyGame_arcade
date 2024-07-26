@@ -18,7 +18,7 @@ class World:
         imgs = {}
         for name in self.mountain:
             img = pygame.image.load(f"assets/terrain/mountain/{name}.png").convert_alpha()
-            if name in ["sky", "rock", "grass_far", "grass"]:
+            if name in self.mountain:
                 img = pygame.transform.scale(img, (img.get_width(), img.get_height() * 2))
             imgs[name] = img
         return imgs
@@ -27,7 +27,7 @@ class World:
         imgs = {}
         for name in self.meadow:
             img = pygame.image.load(f"assets/terrain/meadow/{name}.png").convert_alpha()
-            if name in ["sky", "sky_far", "grass_far", "grass"]:
+            if name in self.meadow:
                 img = pygame.transform.scale(img, (img.get_width(), img.get_height() * 2))
             imgs[name] = img
         return imgs
@@ -38,11 +38,11 @@ class World:
             bg_width = img.get_width()
             bg_height = img.get_height()
             tiles = math.ceil(SCREEN_WIDTH / bg_width)
-            print(f"display tiles0{tiles}")
+            #print(f"display tiles0{tiles}")
 
             for i in range(tiles):
                 x_position = (start_position - (i * bg_width + bg_width) - scroll)
-                print(f"x pos={x_position}")
+                #print(f"x pos={x_position}")
 
                 if x_position < -bg_width:
                     continue
@@ -61,7 +61,7 @@ class World:
 
     def draw_world(self, scroll):
         meadow_width = self.images_meadow[self.meadow[0]].get_width() * len(self.meadow)
-        print(f"scroll pos={meadow_width}")
+        #print(f"scroll pos={meadow_width}")
         if scroll <= 100:
             self.draw_meadow(scroll)
         else:

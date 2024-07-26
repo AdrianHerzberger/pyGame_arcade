@@ -30,6 +30,12 @@ class GameInputs:
             return False
         self.key = self.get_key_presses()
         return self.key[pygame.K_COMMA]
+    
+    def is_attacking_heavy(self):
+        if self.player.is_dead:
+            return False
+        self.key = self.get_key_presses()
+        return self.key[pygame.K_PERIOD]
 
     def is_running(self):
         self.key = self.get_key_presses()

@@ -12,8 +12,11 @@ class Character_Animation:
         self.character_jumping_sheet = pygame.image.load(
             "assets/character/player/jump.png"
         )
-        self.character_idle_attack_light_sheet = pygame.image.load(
+        self.character_attack_light_sheet = pygame.image.load(
             "assets/character/player/attack_1.png"
+        )
+        self.character_attack_heavy_sheet = pygame.image.load(
+            "assets/character/player/attack_2.png"
         )
         self.character_hurt_sheet = pygame.image.load(
             "assets/character/player/hurt.png"
@@ -28,6 +31,7 @@ class Character_Animation:
         self.running_animation = []
         self.jumping_animation = []
         self.attack_light_animation = []
+        self.attack_heavy_animation = []
         self.hurt_animation = []
         self.dead_animation = []
 
@@ -35,6 +39,7 @@ class Character_Animation:
         self.running_animation_steps = 8
         self.jumping_animation_steps = 8
         self.attack_light_animation_steps = 5
+        self.attack_heavy_animation_steps = 4
         self.hurt_animation_steps = 2
         self.dead_animation_steps = 4
 
@@ -43,6 +48,7 @@ class Character_Animation:
             self.running_animation_steps,
             self.jumping_animation_steps,
             self.attack_light_animation_steps,
+            self.attack_heavy_animation_steps,
             self.hurt_animation_steps,
             self.dead_animation_steps
         )
@@ -61,6 +67,7 @@ class Character_Animation:
         self.load_running_animation()
         self.load_jumping_animation()
         self.load_attack_light_animation()
+        self.load_attack_heavy_animation()
         self.load_hurt_animation()
         self.load_dead_animation()
 
@@ -106,11 +113,23 @@ class Character_Animation:
                 (self.frame_width, self.frame_height), pygame.SRCALPHA
             )
             attack_light_sprite.blit(
-                self.character_idle_attack_light_sheet,
+                self.character_attack_light_sheet,
                 (0, 0),
                 (frame * self.frame_width, 0, self.frame_width, self.frame_height),
             )
             self.attack_light_animation.append(attack_light_sprite)
+            
+    def load_attack_heavy_animation(self):
+        for frame in range(self.attack_heavy_animation_steps):
+            attack_heavy_sprite = pygame.Surface(
+                (self.frame_width, self.frame_height), pygame.SRCALPHA
+            )
+            attack_heavy_sprite.blit(
+                self.character_attack_heavy_sheet,
+                (0, 0),
+                (frame * self.frame_width, 0, self.frame_width, self.frame_height),
+            )
+            self.attack_heavy_animation.append(attack_heavy_sprite)
 
     def load_hurt_animation(self):
         for frame in range(self.hurt_animation_steps):
@@ -161,6 +180,11 @@ class Character_Animation:
         self.set_current_animation(self.attack_light_animation_steps)
         self.update_animation()
         return self.attack_light_animation[self.current_frame]
+
+    def get_current_attack_heavy_animation(self):
+        self.set_current_animation(self.attack_heavy_animation_steps)
+        self.update_animation()
+        return self.attack_heavy_animation[self.current_frame]
 
     def get_current_hurt_animation(self):
         self.set_current_animation(self.hurt_animation_steps)

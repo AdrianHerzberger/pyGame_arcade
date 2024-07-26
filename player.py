@@ -15,6 +15,7 @@ class Player:
         self.running = False
         self.facing_left = False
         self.attack_light = False
+        self.attack_heavy = False
         self.on_ground = True
         self.is_hit = False
         self.is_dead = False
@@ -60,6 +61,12 @@ class Player:
             self.kill_enemy(enemies, scroll)
         else:
             self.attack_light = False
+            
+        if self.inputs.is_attacking_heavy():
+            self.attack_heavy = True
+            self.kill_enemy(enemies, scroll)
+        else: 
+            self.attack_heavy = False
 
         self.resolve_player_inputs()
         self.handle_collisions(enemies, scroll)
@@ -72,7 +79,12 @@ class Player:
     def kill_enemy(self, enemies, scroll):
         player_hit_enemies = self.collision_handler.get_attack_hits(enemies, scroll)
         for enemy in player_hit_enemies:
-            enemy_health = enemy.player_kill.enemy_health.taking_damage(PLAYER_DAMAGE)
+            if self.attack_light:
+                #print("Player performs light attack")
+                enemy_health = enemy.player_kill.enemy_health.taking_damage(PLAYER_DAMAGE_LIGHT)
+            if self.attack_heavy:
+                #print("Player performs heavy attack")
+                enemy_health = enemy.player_kill.enemy_health.taking_damage(PLAYER_DAMAGE_HEAVY)
             if enemy_health <= 0:
                 enemy.is_dead = True
 
@@ -146,6 +158,8 @@ class Player:
             animation = self.character_animation.get_current_running_animation()
         elif self.attack_light:
             animation = self.character_animation.get_current_attack_light_animation()
+        elif self.attack_heavy:
+            animation = self.character_animation.get_current_attack_heavy_animation()
         elif self.is_hit:
             animation = self.character_animation.get_current_hurt_animation()
         else:
