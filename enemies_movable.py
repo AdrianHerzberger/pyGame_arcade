@@ -1,7 +1,7 @@
 import pygame
 import random
 from globals import *
-from enemy_animations import Enemy_Animations
+from enemy_movable_animations import Enemy_Movable_Animations
 from player import Player
 from inputs import GameInputs
 
@@ -23,7 +23,7 @@ class Enemy_Movable:
             int(self.original_size[1] * self.scale_factor),
         )
         self.enemy_collision_rect = pygame.Rect(self.enm_x_pos, self.enm_y_pos, 60, 70)
-        self.enemy_animations = Enemy_Animations()
+        self.enemy_animations = Enemy_Movable_Animations()
         self.player_kill = Player(self)
 
     def update(self):

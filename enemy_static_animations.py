@@ -1,47 +1,31 @@
 import pygame
 from pygame.locals import *
 
-
-class Enemy_Animations:
+class Enemy_Static_Animations:
     def __init__(self):
-        super().__init__()
-        self.enemy_idle_sheet = pygame.image.load("assets/enemy/idle.png")
-        self.enemy_walk_sheet = pygame.image.load("assets/enemy/walk.png")
-        self.enemy_attack_light_sheet = pygame.image.load("assets/enemy/attack_light.png")
-        self.enemy_hurt_sheet = pygame.image.load("assets/enemy/hurt.png")
-        self.enemy_dead_sheet = pygame.image.load("assets/enemy/dead.png")
-
-        self.idle_animation = []
-        self.walking_animation = []
-        self.attack_light_animation = []
-        self.hurt_animation = []
-        self.dead_animation = []
-
-        self.idle_animation_steps = 7
-        self.walking_aniamtion_steps = 8
-        self.attack_light_animation_steps = 4
-        self.hurt_animation_steps = 3
-        self.dead_animation_steps = 3
+        self.enemies_static_idle_sheet = pygame.image.load("assets/enemy/static/idle.png")
+        self.enemies_static_dead_sheet = pygame.image.load("assets/enemy/static/disguise.png")
+        self.enemies_static_attack_sheet = pygame.image.load("assets/enemy/static/poison.png")
         
-        self.max_steps = max(
-            self.idle_animation_steps,
-            self.walking_aniamtion_steps,
-            self.attack_light_animation_steps,
-            self.hurt_animation_steps,
-            self.dead_animation_steps
-        )
+        self.idle_animation = []
+        self.dead_animation = []
+        
+        self.idle_animation_steps = 5
+        self.dead_animation_steps = 5
+        
+        self.max_steps = max(self.idle_animation_steps, self.dead_animation_steps)
         
         self.current_animation_steps = 8
         self.current_frame = 0
         self.base_animation_delay = 800
         self.last_update_time = pygame.time.get_ticks()
-
+        
         self.frame_width = 128
         self.frame_height = 128
         
-        self.dead_animation_finished = False 
+        self.dead_animation_finished = False
         
-        self.load_walking_animation() 
+        self.load_idle_animation()
         self.load_dead_animation()
         
     def set_current_animation(self, steps):
@@ -49,19 +33,18 @@ class Enemy_Animations:
             self.current_frame = 0  
         self.current_animation_steps = steps    
         self.animation_delay = self.base_animation_delay / self.max_steps
-        
-        
-    def load_walking_animation(self):
-        for frame in range(self.walking_aniamtion_steps):
-            walking_sprite = pygame.Surface(
+    
+    def load_idle_animation(self):
+        for frame in range(self.idle_animation_steps):
+            idle_sprite = pygame.Surface(
                 (self.frame_width, self.frame_height), pygame.SRCALPHA
             )
-            walking_sprite.blit(
-                self.enemy_walk_sheet, 
+            idle_sprite.blit(
+                self.enemies_static_idle_sheet,
                 (0, 0),
                 (frame * self.frame_width, 0, self.frame_width, self.frame_height)
             )
-            self.walking_animation.append(walking_sprite)
+            self.idle_animation.append(idle_sprite)
             
     def load_dead_animation(self):
         for frame in range(self.dead_animation_steps):
@@ -69,18 +52,16 @@ class Enemy_Animations:
                 (self.frame_width, self.frame_height), pygame.SRCALPHA
             )
             dead_sprite.blit(
-                self.enemy_dead_sheet, 
+                self.enemies_static_dead_sheet, 
                 (0, 0),
                 (frame * self.frame_width, 0, self.frame_width, self.frame_height)
             )
             self.dead_animation.append(dead_sprite)
             
-        
-    def get_current_walking_animation(self):
-        self.set_current_animation(self.walking_aniamtion_steps)
+    def get_current_idle_animation(self):
+        self.set_current_animation(self.idle_animation_steps)
         self.update_animation()
-        return self.walking_animation[self.current_frame]
-    
+        return self.idle_animation[self.current_frame]
     
     def get_current_dead_animation(self):
         if not self.dead_animation_finished:
@@ -95,17 +76,8 @@ class Enemy_Animations:
     def get_dead_static_frame(self):
         return self.dead_animation[-1]
     
-    
     def update_animation(self):
         current_time = pygame.time.get_ticks()
         if current_time - self.last_update_time > self.animation_delay:
             self.current_frame = (self.current_frame + 1) % self.current_animation_steps
             self.last_update_time = current_time
-            
-
-            
-
-
-
-        
-
