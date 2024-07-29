@@ -85,6 +85,17 @@ class Player:
             if bottle_collisions:
                 bottle.is_bottle_collected = True
                 bottles.remove(bottle)
+                self.player_health.heal_up(BOTTLE_HEAL)
+                if self.player_health_meter_right > 0:
+                    self.player_health_meter_right += 1
+                elif self.player_health_meter_left > 0:
+                    self.player_health_meter_left += 1
+                    if self.player_health_meter_center < 0:
+                        self.player_health_meter_center = 0
+                        self.player_health_meter_left = 0
+                        self.player_health_meter_right = 0
+                elif self.player_health_meter_center > 0:
+                    self.player_health_meter_center += 1
 
     
     def kill_enemy(self, enemies, scroll):
