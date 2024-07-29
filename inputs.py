@@ -22,6 +22,8 @@ class GameInputs:
         return self.scroll
     
     def is_jumping(self):
+        if self.player.is_dead:
+            return False
         self.key = self.get_key_presses()
         return self.key[pygame.K_SPACE] and self.player.on_ground
     
