@@ -4,10 +4,11 @@ from pygame.locals import *
 class GameInputs:
     def __init__(self, player):
         self.player = player
-        self.key = None
         self.scroll = 0
+        self.key = None
         self.light_attack_start = None
         self.heavy_attack_start = None
+        self.jump_start = None
 
     def get_key_presses(self):
         self.key = pygame.key.get_pressed()
@@ -27,16 +28,27 @@ class GameInputs:
         if self.player.is_dead:
             return False
         self.key = self.get_key_presses()
-        return self.key[pygame.K_SPACE] and self.player.on_ground
+        current_time = pygame.time.get_ticks()
+        if self.key[pygame.K_SPACE]:
+            if self.jump_start is None:
+                self.jump_start = current_time
+                return self.player.on_ground
+            elif current_time - self.jump_start > 1000:
+                self.jump_start = current_time
+                return self.player.on_ground
+        else:
+            self.jump_start = None
+        return False
     
     def is_attacking_light(self):
         if self.player.is_dead:
             return False
         self.key = self.get_key_presses()
+        current_time = pygame.time.get_ticks()
         if self.key[pygame.K_COMMA]:
             if self.light_attack_start is None:
                 self.light_attack_start = pygame.time.get_ticks()
-            elif pygame.time.get_ticks() - self.light_attack_start > 500:  
+            elif current_time - self.light_attack_start > 500:  
                 return True
         else:
             self.light_attack_start = None
@@ -46,10 +58,11 @@ class GameInputs:
         if self.player.is_dead:
             return False
         self.key = self.get_key_presses()
+        current_time = pygame.time.get_ticks()
         if self.key[pygame.K_PERIOD]:
             if self.heavy_attack_start is None:
                 self.heavy_attack_start = pygame.time.get_ticks()
-            elif pygame.time.get_ticks() - self.heavy_attack_start > 500:  
+            elif current_time - self.heavy_attack_start > 500:  
                 return True
         else:
             self.heavy_attack_start = None
