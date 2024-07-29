@@ -25,13 +25,14 @@ class Health_Bottles:
         )
         self.player_collects = Player(self)
 
-    def update(self):
+    def update(self):        
         self.bottle_collision_rect.topleft = (self.bottle_x_pos, self.bottle_y_pos)
         if self.bottle_x_pos > self.bottle_max_range:
             self.bottle_x_pos = self.bottle_max_range
         elif self.bottle_x_pos < self.bottle_min_range:
             self.bottle_x_pos = self.bottle_min_range
-
+            
+        
     def draw(self, screen, scroll):
         health_bottle_sprite = pygame.Surface(
             (self.frame_width, self.frame_height), pygame.SRCALPHA

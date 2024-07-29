@@ -70,7 +70,9 @@ class Player:
 
         self.resolve_player_inputs()
         self.handle_collisions(enemies, scroll)
-        self.collect_health_bottles(bottles, scroll)
+        
+        if not self.player_health.current_health >= MAX_PLAYER_HEALTH:
+            self.collect_health_bottles(bottles, scroll)
 
         if self.y_pos == PLAYER_Y_POS:
             self.on_ground = True
@@ -82,7 +84,7 @@ class Player:
         for bottle in bottle_collisions:
             if bottle_collisions:
                 bottle.is_bottle_collected = True
-                print(f"The collision with a bottle is={bottle.is_bottle_collected}")
+                bottles.remove(bottle)
 
     
     def kill_enemy(self, enemies, scroll):

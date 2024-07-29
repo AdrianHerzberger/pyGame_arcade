@@ -8,7 +8,7 @@ from map import World
 from character_animations import Character_Animation
 from player import Player
 from enemy import Enemy
-from collectables import Health_Bottles
+from collectables_health import Health_Bottles
 from camera import Camera
 
 clock = pygame.time.Clock()
