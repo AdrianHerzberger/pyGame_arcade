@@ -7,7 +7,7 @@ from inputs import GameInputs
 from map import World
 from character_animations import Character_Animation
 from player import Player
-from enemy import Enemy
+from enemies_movable import Enemy_Movable
 from collectables_health import Health_Bottles
 from camera import Camera
 
@@ -21,7 +21,7 @@ def main():
     player = Player(screen)
     inputs = GameInputs(player)
     world = World(screen, inputs)
-    enemies = Enemy.create_enemies()
+    enemies = Enemy_Movable.create_enemies()
     bottles = Health_Bottles.create_bottles()
     camera = Camera(SCREEN_WIDTH, SCREEN_HEIGHT)
 
@@ -46,7 +46,7 @@ def main():
         player.collision_handler.draw(screen)
         player.collision_handler.draw_attack_collision_rect(screen)
 
-        Enemy.draw_enemies(screen, enemies, scroll)
+        Enemy_Movable.draw_enemies(screen, enemies, scroll)
         Health_Bottles.draw_health_bottles(screen, bottles, scroll)
 
         pygame.display.flip()

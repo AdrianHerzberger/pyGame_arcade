@@ -6,6 +6,8 @@ class GameInputs:
         self.player = player
         self.key = None
         self.scroll = 0
+        self.light_attack_start = None
+        self.heavy_attack_start = None
 
     def get_key_presses(self):
         self.key = pygame.key.get_pressed()
@@ -31,13 +33,27 @@ class GameInputs:
         if self.player.is_dead:
             return False
         self.key = self.get_key_presses()
-        return self.key[pygame.K_COMMA]
+        if self.key[pygame.K_COMMA]:
+            if self.light_attack_start is None:
+                self.light_attack_start = pygame.time.get_ticks()
+            elif pygame.time.get_ticks() - self.light_attack_start > 500:  
+                return True
+        else:
+            self.light_attack_start = None
+        return False
     
     def is_attacking_heavy(self):
         if self.player.is_dead:
             return False
         self.key = self.get_key_presses()
-        return self.key[pygame.K_PERIOD]
+        if self.key[pygame.K_PERIOD]:
+            if self.heavy_attack_start is None:
+                self.heavy_attack_start = pygame.time.get_ticks()
+            elif pygame.time.get_ticks() - self.heavy_attack_start > 500:  
+                return True
+        else:
+            self.heavy_attack_start = None
+        return False
 
     def is_running(self):
         self.key = self.get_key_presses()

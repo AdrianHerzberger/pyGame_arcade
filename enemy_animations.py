@@ -41,10 +41,6 @@ class Enemy_Animations:
         
         self.dead_animation_finished = False 
         
-        # self.idle_animation = self.load_animation(self.enemy_idle_sheet, self.idle_animation_steps)
-        # self.attack_light_animation = self.load_animation(self.enemy_attack_light_sheet, self.attack_light_animation_steps)
-        # self.hurt_animation = self.load_animation(self.enemy_hurt_sheet, self.hurt_animations_steps)
-        # self.dead_animation = self.load_animation(self.enemy_dead_sheet, self.dead_animations_steps)
         self.load_walking_animation() 
         self.load_dead_animation()
         
@@ -106,16 +102,6 @@ class Enemy_Animations:
             self.current_frame = (self.current_frame + 1) % self.current_animation_steps
             self.last_update_time = current_time
             
-            
-        
-    # def load_animation(self, sheet, steps):
-    #     animation = []
-    #     for frame in range(steps):
-    #         sprite = pygame.Surface((self.frame_width, self.frame_height), pygame.SRCALPHA)
-    #         sprite.blit(sheet, (0, 0), (frame * self.frame_width, 0, self.frame_width, self.frame_height))
-    #         animation.append(sprite)
-    #     return animation
-    
 
             
 

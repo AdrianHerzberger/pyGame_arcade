@@ -6,14 +6,14 @@ from player import Player
 from inputs import GameInputs
 
 
-class Enemy:
+class Enemy_Movable:
     def __init__(self, x, y):
         self.facing_left = False
         self.is_dead = False
         self.enm_x_pos = x
         self.enm_y_pos = y
         self.enm_range_min = random.randint(0, SCREEN_WIDTH // 2)
-        self.enm_range_max = random.randint(SCREEN_WIDTH // 2, SCREEN_WIDTH)
+        self.enm_range_max = random.randint(SCREEN_WIDTH // 2, SCREEN_WIDTH * 3)
         self.speed = 1
         self.direction = 1
         self.scale_factor = 0.8
