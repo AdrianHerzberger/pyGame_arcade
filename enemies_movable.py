@@ -12,7 +12,7 @@ class Enemy_Movable:
         self.is_dead = False
         self.enm_x_pos = x
         self.enm_y_pos = y
-        self.enm_range_min = random.randint(0, SCREEN_WIDTH // 2)
+        self.enm_range_min = random.randint(200, SCREEN_WIDTH // 2)
         self.enm_range_max = random.randint(SCREEN_WIDTH // 2, SCREEN_WIDTH * 3)
         self.speed = 1
         self.direction = 1

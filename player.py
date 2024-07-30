@@ -21,7 +21,7 @@ class Player:
         self.is_dead = False
         self.dead_animation_played = False
         self.jump_force = 0
-        self.gravity = 7
+        self.gravity = 5
         self.x_pos = PLAYER_X_POS
         self.y_pos = PLAYER_Y_POS
         self.inputs = GameInputs(self)
@@ -38,7 +38,7 @@ class Player:
         if self.inputs.is_jumping():
             self.jumping = True
             self.on_ground = False
-            self.jump_force = 50
+            self.jump_force = 55
 
         if self.jumping:
             self.y_pos -= self.jump_force

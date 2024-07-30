@@ -22,6 +22,9 @@ class Player_Collision:
         
         if self.player.attack_light:
             pygame.draw.rect(screen, (255, 0, 0), self.attack_collision_rect, 2)
+            
+        if self.player.attack_heavy:
+            pygame.draw.rect(screen, (255, 0, 0), self.attack_collision_rect, 2)
     
     def check_collisions(self, enemies):
         self.check_collisions_x(enemies)

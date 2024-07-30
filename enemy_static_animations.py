@@ -13,9 +13,8 @@ class Enemy_Static_Animations:
         self.enemy_static_attack_sheet = pygame.image.load(
             "assets/enemy/static/poison.png"
         )
-        
         self.enemy_poison_attack_sheet = pygame.image.load(
-            "assets/enemy/static/poison.png"
+            "assets/enemy/static/cloud_posion.png"
         )
 
         self.idle_animation = []
@@ -32,7 +31,7 @@ class Enemy_Static_Animations:
             self.idle_animation_steps,
             self.dead_animation_steps,
             self.static_attack_steps,
-            self.poison_attack_steps
+            self.poison_attack_steps,
         )
 
         self.current_animation_steps = 9
@@ -91,6 +90,18 @@ class Enemy_Static_Animations:
             )
             self.static_attack.append(static_attack_sprite)
 
+    def load_poison_attack(self):
+        for frame in range(self.poison_attack_steps):
+            poison_attack_sprite = pygame.Surface(
+                (self.frame_width, self.frame_height), pygame.SRCALPHA
+            )
+            poison_attack_sprite.blit(
+                self.enemy_poison_attack_sheet,
+                (0, 0),
+                (frame * self.frame_width, 0, self.frame_height, self.frame_height),
+            )
+            self.poison_attack.append(poison_attack_sprite)
+
     def get_current_idle_animation(self):
         self.set_current_animation(self.idle_animation_steps)
         self.update_animation()
@@ -113,6 +124,11 @@ class Enemy_Static_Animations:
         self.set_current_animation(self.static_attack_steps)
         self.update_animation()
         return self.static_attack[self.current_frame]
+
+    def get_current_poison_attack_animation(self):
+        self.set_current_animation(self.poison_attack_steps)
+        self.update_animation()
+        return self.poison_attack[self.current_frame]
 
     def update_animation(self):
         current_time = pygame.time.get_ticks()
