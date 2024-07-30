@@ -6,43 +6,43 @@ from player import Player
 from globals import *
 
 
-class Enemy_Static:
+class Enemy_Static(Enemy_Movable):
     def __init__(self, x, y):
-        self.enemy_instance = Enemy_Movable(x, y)
+        super().__init__(x, y)
         self.enemy_animations = Enemy_Static_Animations()
         self.player_kill = Player(self)
 
         
     def update(self):
         if self.player_kill.enemy_health.current_health == 0:
-            self.enemy_instance.is_dead = True
+            self.is_dead = True
             
-        if not self.enemy_instance.is_dead:
-            self.enemy_instance.enemy_collision_rect.topleft = (self.enemy_instance.enm_x_pos, self.enemy_instance.enm_y_pos)
-            if self.enemy_instance.enm_x_pos > self.enemy_instance.enm_range_max:
-                self.enemy_instance.enm_x_pos = self.enemy_instance.enm_range_max
-            elif self.enemy_instance.enm_x_pos < self.enemy_instance.enm_range_min:
-                self.enemy_instance.enm_x_pos = self.enemy_instance.enm_range_min
+        if not self.is_dead:
+            self.enemy_collision_rect.topleft = (self.enm_x_pos, self.enm_y_pos)
+            if self.enm_x_pos > self.enm_range_max:
+                self.enm_x_pos = self.enm_range_max
+            elif self.enm_x_pos < self.enm_range_min:
+                self.enm_x_pos = self.enm_range_min
                 
                 
     def draw(self, screen, scroll):
-        if self.enemy_instance.is_dead:
+        if self.is_dead:
             animation = self.enemy_animations.get_current_dead_animation()
-            animation = pygame.transform.scale(animation, self.enemy_instance.scaled_size)
+            animation = pygame.transform.scale(animation, self.scaled_size)
         else:
             animation = self.enemy_animations.get_current_idle_animation()
-            animation = pygame.transform.scale(animation, self.enemy_instance.scaled_size)
+            animation = pygame.transform.scale(animation, self.scaled_size)
 
-        screen.blit(animation, (self.enemy_instance.enm_x_pos - scroll, self.enemy_instance.enm_y_pos))
+        screen.blit(animation, (self.enm_x_pos - scroll, self.enm_y_pos))
 
         pygame.draw.rect(
             screen,
             (0, 255, 0),
             pygame.Rect(
-                self.enemy_instance.enm_x_pos - scroll + 20,
-                self.enemy_instance.enm_y_pos + 40,
-                self.enemy_instance.enemy_collision_rect.width,
-                self.enemy_instance.enemy_collision_rect.height,
+                self.enm_x_pos - scroll + 20,
+                self.enm_y_pos + 40,
+                self.enemy_collision_rect.width,
+                self.enemy_collision_rect.height,
             ),
             2,
         )

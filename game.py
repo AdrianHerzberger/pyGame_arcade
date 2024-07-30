@@ -26,6 +26,8 @@ def main():
     enemies_static = Enemy_Static.create_enemies()
     bottles = Health_Bottles.create_bottles()
     camera = Camera(SCREEN_WIDTH, SCREEN_HEIGHT)
+    
+    enemies = enemies_movable + enemies_static
 
     running = True
     while running:
@@ -35,7 +37,7 @@ def main():
                 running = False
 
         scroll = inputs.move_left_right()
-        player.update(enemies_movable, bottles, scroll)
+        player.update(enemies, bottles, scroll)
         world.draw_world(scroll)
 
         player_animation = player.get_current_animation()

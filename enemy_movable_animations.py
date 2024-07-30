@@ -4,26 +4,22 @@ from pygame.locals import *
 
 class Enemy_Movable_Animations:
     def __init__(self):
-        self.enemy_movable_idle_sheet = pygame.image.load("assets/enemy/movable/idle.png")
         self.enemy_movable_walk_sheet = pygame.image.load("assets/enemy/movable/walk.png")
         self.enemy_movable_attack_light_sheet = pygame.image.load("assets/enemy/movable/attack_light.png")
         self.enemy_movable_hurt_sheet = pygame.image.load("assets/enemy/movable/hurt.png")
         self.enemy_movable_dead_sheet = pygame.image.load("assets/enemy/movable/dead.png")
         
-        self.idle_animation = []
         self.walking_animation = []
         self.attack_light_animation = []
         self.hurt_animation = []
         self.dead_animation = []
 
-        self.idle_animation_steps = 7
         self.walking_aniamtion_steps = 8
         self.attack_light_animation_steps = 4
         self.hurt_animation_steps = 3
         self.dead_animation_steps = 3
         
         self.max_steps = max(
-            self.idle_animation_steps,
             self.walking_aniamtion_steps,
             self.attack_light_animation_steps,
             self.hurt_animation_steps,
