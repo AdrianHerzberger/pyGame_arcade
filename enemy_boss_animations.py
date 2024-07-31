@@ -13,7 +13,6 @@ class Enemy_Boss_Animations:
             "assets/enemy/boss/attack_heavy.png"
         )
         self.enemy_boss_defend_sheet = pygame.image.load("assets/enemy/boss/defend.png")
-        self.enemy_boss_hurt_sheet = pygame.image.load("assets/enemy/boss/hurt.png")
         self.enemy_boss_dead_sheet = pygame.image.load("assets/enemy/boss/dead.png")
         
         
@@ -25,12 +24,12 @@ class Enemy_Boss_Animations:
         self.hurt_sheet = []
         self.dead_animation = []
         
-        self.walking_animation_steps = 8
+        self.walking_animation_steps = 7
         self.hurt_animation_steps = 2
-        self.attack_light_animation_steps = 5
-        self.attack_heavy_animation_steps = 6
-        self.defend_animation_steps = 5
-        self.dead_animation_steps = 5
+        self.attack_light_animation_steps = 6
+        self.attack_heavy_animation_steps = 7
+        self.defend_animation_steps = 1
+        self.dead_animation_steps = 4
         
         self.max_steps = max(
             self.walking_animation_steps,
@@ -42,13 +41,13 @@ class Enemy_Boss_Animations:
             
         )
         
-        self.current_animation_steps = 8
+        self.current_animation_steps = 7
         self.current_frame = 0
         self.base_animation_delay = 800
         self.last_update_time = pygame.time.get_ticks()
 
-        self.frame_width = 86
-        self.frame_height = 86
+        self.frame_width = 128
+        self.frame_height = 128
         
         self.dead_animation_finished = False 
         

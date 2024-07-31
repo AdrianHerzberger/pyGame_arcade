@@ -1,6 +1,3 @@
-import pygame
-from pygame.locals import *
-
 SCREEN_WIDTH = 1000
 SCREEN_HEIGHT = 600
 FPS = 60
@@ -13,6 +10,10 @@ OFFSET_Y = 50
 
 ENEMY_X_POS = 320
 ENEMY_Y_POS = 430
+
+BOSS_X_POS = 1200
+BOSS_Y_POS = 340
+
 ENEMY_MIN_RANGE = 50
 ENEMY_MAX_RANGE = 2800
 
