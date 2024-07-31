@@ -38,11 +38,9 @@ class World:
             bg_width = img.get_width()
             bg_height = img.get_height()
             tiles = math.ceil(SCREEN_WIDTH / bg_width)
-            #print(f"display tiles0{tiles}")
 
             for i in range(tiles):
                 x_position = (start_position - (i * bg_width + bg_width) - scroll)
-                #print(f"x pos={x_position}")
 
                 if x_position < -bg_width:
                     continue
@@ -61,7 +59,6 @@ class World:
 
     def draw_world(self, scroll):
         meadow_width = self.images_meadow[self.meadow[0]].get_width() * len(self.meadow)
-        #print(f"scroll pos={meadow_width}")
         if scroll <= 100:
             self.draw_meadow(scroll)
         else:

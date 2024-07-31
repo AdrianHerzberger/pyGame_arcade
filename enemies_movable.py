@@ -29,7 +29,6 @@ class Enemy_Movable:
     def update(self):
         if self.player_kill.enemy_health.current_health == 0:
             self.is_dead = True
-            #print(f"Status enemy dead flag: {self.is_dead}")
             
         if not self.is_dead:
             self.enm_x_pos += self.speed * self.direction
@@ -43,7 +42,6 @@ class Enemy_Movable:
                 self.direction *= -1
                 self.facing_left = False
 
-            #print(f"Enemy updated position: {self.enm_x_pos}, {self.enm_y_pos}")
 
     def draw(self, screen, scroll):
         if self.is_dead:

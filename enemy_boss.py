@@ -6,7 +6,7 @@ from enemies_movable import Enemy_Movable
 from enemy_boss_animations import Enemy_Boss_Animations
 from player import Player
 
-class Enemey_Boss(Enemy_Movable):
+class Enemy_Boss(Enemy_Movable):
     def __init__(self, x, y):
         super().__init__(x, y)
         self.enemy_boss_animations = Enemy_Boss_Animations()
@@ -18,17 +18,16 @@ class Enemey_Boss(Enemy_Movable):
             int(self.original_size[0] * self.scale_factor),
             int(self.original_size[1] * self.scale_factor),
         )
+        self.enemy_collision_rect = pygame.Rect(self.enm_x_pos, self.enm_y_pos, 80, 120)
         self.player_kill = Player(self)
-        self.enemy_boss_collision_rect = pygame.Rect(self.enm_x_pos, self.enm_y_pos, 80, 120)
-        
-        
+
     def update(self):
-        if self.player_kill.enemy_health.current_health == 0:
+        if self.player_kill.boss_health.current_health == 0:
             self.is_dead = True
-            
+
         if not self.is_dead:
             self.enm_x_pos += self.speed * self.direction
-            self.enemy_boss_collision_rect.topleft = (self.enm_x_pos, self.enm_y_pos)
+            self.enemy_collision_rect.topleft = (self.enm_x_pos, self.enm_y_pos)
             if self.enm_x_pos > self.enm_range_max:
                 self.enm_x_pos = self.enm_range_max
                 self.direction *= -1
@@ -37,8 +36,7 @@ class Enemey_Boss(Enemy_Movable):
                 self.enm_x_pos = self.enm_range_min
                 self.direction *= -1
                 self.facing_left = False
-                
-            
+
     def draw(self, screen, scroll):
         if self.is_dead:
             animation = self.enemy_boss_animations.get_current_dead_animation()
@@ -54,8 +52,8 @@ class Enemey_Boss(Enemy_Movable):
                 pygame.Rect(
                     adjust_x_pos + 50,
                     self.enm_y_pos + 80,
-                    self.enemy_boss_collision_rect.width,
-                    self.enemy_boss_collision_rect.height,
+                    self.enemy_collision_rect.width,
+                    self.enemy_collision_rect.height,
                 ),
                 2,
             )
@@ -64,15 +62,11 @@ class Enemey_Boss(Enemy_Movable):
             if self.facing_left:
                 animation = pygame.transform.flip(animation, True, False)
             screen.blit(animation, (self.enm_x_pos - scroll, self.enm_y_pos))
-            
-            
+
     @classmethod
     def create_enemy_boss(cls):
-        return [
-            cls(random.randint(0, BOSS_X_POS), BOSS_Y_POS),
-        ]
-        
-        
+        return [cls(random.randint(0, BOSS_X_POS), BOSS_Y_POS)]
+
     @staticmethod
     def draw_boss(screen, boss, scroll):
         for b in boss:

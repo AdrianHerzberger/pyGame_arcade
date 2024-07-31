@@ -9,12 +9,11 @@ from character_animations import Character_Animation
 from player import Player
 from enemies_movable import Enemy_Movable
 from enemy_static import Enemy_Static
-from enemy_boss import Enemey_Boss
+from enemy_boss import Enemy_Boss
 from collectables_health import Health_Bottles
 from camera import Camera
 
 clock = pygame.time.Clock()
-
 
 def main():
     pygame.init()
@@ -25,7 +24,7 @@ def main():
     world = World(screen, inputs)
     enemies_movable = Enemy_Movable.create_enemies()
     enemies_static = Enemy_Static.create_enemies()
-    enemy_boss = Enemey_Boss.create_enemy_boss()
+    enemy_boss = Enemy_Boss.create_enemy_boss()
     bottles = Health_Bottles.create_bottles()
     camera = Camera(SCREEN_WIDTH, SCREEN_HEIGHT)
     
@@ -54,7 +53,7 @@ def main():
 
         Enemy_Movable.draw_enemies(screen, enemies_movable, scroll)
         Enemy_Static.draw_enemies(screen, enemies_static, scroll)
-        Enemey_Boss.draw_boss(screen, enemy_boss, scroll)
+        Enemy_Boss.draw_boss(screen, enemy_boss, scroll)
         Health_Bottles.draw_health_bottles(screen, bottles, scroll)
 
         pygame.display.flip()
@@ -63,7 +62,6 @@ def main():
         pygame.display.update()
 
     pygame.quit()
-
 
 if __name__ == "__main__":
     main()

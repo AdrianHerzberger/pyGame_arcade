@@ -73,11 +73,36 @@ class Enemy_Boss_Animations:
                 (frame * self.frame_width, 0, self.frame_width, self.frame_height)
             )
             self.walking_animation.append(walking_sprite)
+            
+    def load_dead_animation(self):
+        for frame in range(self.dead_animation_steps):
+            dead_sprite = pygame.Surface(
+                (self.frame_width, self.frame_height), pygame.SRCALPHA
+            )
+            dead_sprite.blit(
+                self.enemy_boss_dead_sheet, 
+                (0, 0),
+                (frame * self.frame_width, 0, self.frame_width, self.frame_height)
+            )
+            self.dead_animation.append(dead_sprite)
     
     def get_current_walking_animation(self):
         self.set_current_animation(self.walking_animation_steps)
         self.update_animation()
         return self.walking_animation[self.current_frame]
+    
+    def get_current_dead_animation(self):
+        if not self.dead_animation_finished:
+            self.set_current_animation(self.dead_animation_steps)
+            self.update_animation()
+            if self.current_frame == self.dead_animation_steps - 1:
+                self.dead_animation_finished = True 
+            return self.dead_animation[self.current_frame]
+        else:
+            return self.get_dead_static_frame()
+        
+    def get_dead_static_frame(self):
+        return self.dead_animation[-1]
     
     def update_animation(self):
         current_time = pygame.time.get_ticks()
