@@ -163,6 +163,11 @@ class Player:
             self.jumping = False
         if not self.collision_handler:
             self.jumping = True
+            
+        if self.inputs.is_running():
+            self.attack_light = False
+            self.attack_heavy = False
+
 
     def running_direction(self):
         self.key = self.inputs.get_key_presses()
