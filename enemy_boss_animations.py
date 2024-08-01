@@ -1,8 +1,9 @@
 import pygame
 from pygame.locals import *
+from enemy_movable_animations import Enemy_Movable_Animations
 
 
-class Enemy_Boss_Animations:
+class Enemy_Boss_Animations(Enemy_Movable_Animations):
     def __init__(self):
         self.enemy_boss_walk_sheet = pygame.image.load("assets/enemy/boss/walk.png")
         self.enemy_boss_hurt_sheet = pygame.image.load("assets/enemy/boss/hurt.png")
@@ -50,16 +51,8 @@ class Enemy_Boss_Animations:
         self.frame_height = 128
         
         self.dead_animation_finished = False 
-        
-        
         self.load_walking_animation()
-        
-    
-    def set_current_animation(self, steps):
-        if self.current_animation_steps != steps:
-            self.current_frame = 0  
-        self.current_animation_steps = steps    
-        self.animation_delay = self.base_animation_delay / self.max_steps
+        self.load_dead_animation()
         
         
     def load_walking_animation(self):
@@ -90,22 +83,3 @@ class Enemy_Boss_Animations:
         self.set_current_animation(self.walking_animation_steps)
         self.update_animation()
         return self.walking_animation[self.current_frame]
-    
-    def get_current_dead_animation(self):
-        if not self.dead_animation_finished:
-            self.set_current_animation(self.dead_animation_steps)
-            self.update_animation()
-            if self.current_frame == self.dead_animation_steps - 1:
-                self.dead_animation_finished = True 
-            return self.dead_animation[self.current_frame]
-        else:
-            return self.get_dead_static_frame()
-        
-    def get_dead_static_frame(self):
-        return self.dead_animation[-1]
-    
-    def update_animation(self):
-        current_time = pygame.time.get_ticks()
-        if current_time - self.last_update_time > self.animation_delay:
-            self.current_frame = (self.current_frame + 1) % self.current_animation_steps
-            self.last_update_time = current_time

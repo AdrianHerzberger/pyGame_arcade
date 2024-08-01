@@ -2,7 +2,6 @@ import pygame
 import random
 from enemies_movable import Enemy_Movable
 from enemy_static_animations import Enemy_Static_Animations
-from player import Player
 from globals import *
 
 
@@ -10,7 +9,6 @@ class Enemy_Static(Enemy_Movable):
     def __init__(self, x, y):
         super().__init__(x, y)
         self.enemy_animations = Enemy_Static_Animations()
-        self.player_kill = Player(self)
         self.last_updated_time = pygame.time.get_ticks()
         self.last_attack_time = pygame.time.get_ticks()
         self.attack_interval = 5000 
@@ -25,7 +23,7 @@ class Enemy_Static(Enemy_Movable):
 
         
     def update(self):
-        if self.player_kill.enemy_health.current_health == 0:
+        if self.enemy_health.current_health == 0:
             self.is_dead = True
             
         if not self.is_dead:
@@ -40,7 +38,6 @@ class Enemy_Static(Enemy_Movable):
         current_time = pygame.time.get_ticks()
         if self.is_dead:
             animation = self.enemy_animations.get_current_dead_animation()
-            #animation = pygame.transform.scale(animation, self.scaled_size)
         elif current_time - self.last_attack_time > self.attack_interval:
             animation = self.enemy_animations.get_current_static_attack_animation()
             self.last_attack_time = current_time

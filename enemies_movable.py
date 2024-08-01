@@ -2,6 +2,7 @@ import pygame
 import random
 from globals import *
 from enemy_movable_animations import Enemy_Movable_Animations
+from enemy_health import Enemy_Health
 from player import Player
 from inputs import GameInputs
 
@@ -24,10 +25,10 @@ class Enemy_Movable:
         )
         self.enemy_collision_rect = pygame.Rect(self.enm_x_pos, self.enm_y_pos, 60, 70)
         self.enemy_animations = Enemy_Movable_Animations()
-        self.player_kill = Player(self)
+        self.enemy_health = Enemy_Health()
 
     def update(self):
-        if self.player_kill.enemy_health.current_health == 0:
+        if self.enemy_health.current_health == 0:
             self.is_dead = True
             
         if not self.is_dead:

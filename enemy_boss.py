@@ -4,7 +4,7 @@ from pygame.locals import *
 from globals import * 
 from enemies_movable import Enemy_Movable
 from enemy_boss_animations import Enemy_Boss_Animations
-from player import Player
+from boss_health import Boss_Health
 
 class Enemy_Boss(Enemy_Movable):
     def __init__(self, x, y):
@@ -19,10 +19,10 @@ class Enemy_Boss(Enemy_Movable):
             int(self.original_size[1] * self.scale_factor),
         )
         self.enemy_collision_rect = pygame.Rect(self.enm_x_pos, self.enm_y_pos, 80, 120)
-        self.player_kill = Player(self)
+        self.boss_health = Boss_Health()
 
     def update(self):
-        if self.player_kill.boss_health.current_health == 0:
+        if self.boss_health.current_health == 0:
             self.is_dead = True
 
         if not self.is_dead:

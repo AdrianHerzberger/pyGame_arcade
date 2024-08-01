@@ -5,7 +5,6 @@ from inputs import GameInputs
 from character_animations import Character_Animation
 from health_bar_animations import Health_Bar_Animation
 from player_health import Player_Health
-from enemy_health import Enemy_Health
 from player_collision import Player_Collision
 
 class Player:
@@ -28,7 +27,6 @@ class Player:
         self.character_animation = Character_Animation()
         self.collision_handler = Player_Collision(self)
         self.player_health = Player_Health()
-        self.enemy_health = Enemy_Health()
         self.player_health_animation = Health_Bar_Animation(screen)
         self.player_health_meter_center = 50
         self.player_health_meter_right = 25
@@ -99,18 +97,28 @@ class Player:
 
     
     def kill_enemy(self, enemies, scroll):
-        player_hit_enemies = self.collision_handler.get_attack_hits(enemies, scroll)
+        from enemy_boss import Enemy_Boss 
+        player_hit_enemies = self.collision_handler.get_hits(enemies, scroll)
         for enemy in player_hit_enemies:
+            print(f"print hit detection on all enemy types={player_hit_enemies}")
             if self.attack_light:
-                #print("Player performs light attack")
-                enemy_health = enemy.player_kill.enemy_health.taking_damage(PLAYER_DAMAGE_LIGHT)
+                if isinstance(enemy, Enemy_Boss):
+                    enemy_health = enemy.boss_health.taking_damage(PLAYER_DAMAGE_LIGHT)
+                    print(f"Boss health after update={enemy_health}")
+                else:
+                    enemy_health = enemy.enemy_health.taking_damage(PLAYER_DAMAGE_LIGHT)
+                    print(f"Enemy health after update={enemy_health}")
             if self.attack_heavy:
-                #print("Player performs heavy attack")
-                enemy_health = enemy.player_kill.enemy_health.taking_damage(PLAYER_DAMAGE_HEAVY)
+                if isinstance(enemy, Enemy_Boss):
+                    enemy_health = enemy.boss_health.taking_damage(PLAYER_DAMAGE_HEAVY)
+                    print(f"Boss health after update={enemy_health}")
+                else:
+                    enemy_health = enemy.enemy_health.taking_damage(PLAYER_DAMAGE_HEAVY)
             if enemy_health <= 0:
                 enemy.is_dead = True
 
     def handle_collisions(self, enemies, scroll):
+        from boss_health import Boss_Health 
         alive_enemies = self.is_enemy_alive(enemies)
 
         enemy_collisions = self.collision_handler.get_hits(alive_enemies, scroll)

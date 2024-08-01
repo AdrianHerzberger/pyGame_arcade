@@ -1,9 +1,9 @@
 from globals import *
 
 
-class Player_Health:
+class Boss_Health:
     def __init__(self):
-        self.max_health = MAX_PLAYER_HEALTH
+        self.max_health = MAX_BOSS_HEALTH
         self.current_health = self.max_health
 
     def taking_damage(self, damage):
