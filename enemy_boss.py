@@ -9,10 +9,12 @@ from boss_health import Boss_Health
 class Enemy_Boss(Enemy_Movable):
     def __init__(self, x, y):
         super().__init__(x, y)
+        self.is_attacking = False
         self.enemy_boss_animations = Enemy_Boss_Animations()
         self.enm_range_min = random.randint(200, SCREEN_WIDTH // 2)
         self.enm_range_max = random.randint(SCREEN_WIDTH // 2, SCREEN_WIDTH * 2)
-        self.last_attack_time = pygame.time.get_ticks()
+        self.last_attack_light_time = pygame.time.get_ticks()
+        self.last_attack_heavy_time = pygame.time.get_ticks()
         self.attack_light_interval = 5000
         self.attack_heavy_interval = 8000
         self.attack_duration = 2000
@@ -26,6 +28,7 @@ class Enemy_Boss(Enemy_Movable):
         self.boss_health = Boss_Health()
 
     def update(self):
+        current_time = pygame.time.get_ticks()
         if self.boss_health.current_health == 0:
             self.is_dead = True
         if not self.is_dead:
@@ -39,19 +42,28 @@ class Enemy_Boss(Enemy_Movable):
                 self.enm_x_pos = self.enm_range_min
                 self.direction *= -1
                 self.facing_left = False
+                
+        if not self.is_attacking and current_time - self.last_attack_light_time > self.attack_light_interval:
+            self.last_attack_light_time = current_time
+            self.is_attacking = True
+            self.attack_type = 'light'
+                
+        if not self.is_attacking and current_time - self.last_attack_heavy_time > self.attack_heavy_interval:
+            self.last_attack_heavy_time = current_time
+            self.is_attacking = True
+            self.attack_type = "heavy"
+            
+        if self.is_attacking and current_time - (self.last_attack_light_time if self.attack_type == 'light' else self.last_attack_heavy_time) > self.attack_duration:
+            self.is_attacking = False
 
     def draw(self, screen, scroll):
-        current_time = pygame.time.get_ticks()
         if self.is_dead:
             animation = self.enemy_boss_animations.get_current_dead_animation()
-        elif current_time - self.last_attack_time < self.attack_duration:
-            animation = self.enemy_boss_animations.get_current_attack_light_animation()
-        elif current_time - self.last_attack_time > self.attack_light_interval:
-            self.last_attack_time = current_time
-            animation = self.enemy_boss_animations.get_current_attack_light_animation()
-        elif current_time - self.last_attack_time > self.attack_heavy_interval:
-            self.last_attack_time = current_time
-            animation = self.enemy_boss_animations.get_current_attack_heavy_animation()
+        elif self.is_attacking:
+            if self.attack_type == 'light':
+                animation = self.enemy_boss_animations.get_current_attack_light_animation()
+            elif self.attack_type == 'heavy':
+                animation = self.enemy_boss_animations.get_current_attack_heavy_animation()
         else:
             animation = self.enemy_boss_animations.get_current_walking_animation()
 
@@ -59,7 +71,6 @@ class Enemy_Boss(Enemy_Movable):
             animation = pygame.transform.flip(animation, True, False)
 
         animation = pygame.transform.scale(animation, self.scaled_size)
-
         screen.blit(animation, (self.enm_x_pos - scroll, self.enm_y_pos))
 
         if not self.is_dead:

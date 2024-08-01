@@ -100,18 +100,14 @@ class Player:
         from enemy_boss import Enemy_Boss 
         player_hit_enemies = self.collision_handler.get_hits(enemies, scroll)
         for enemy in player_hit_enemies:
-            print(f"print hit detection on all enemy types={player_hit_enemies}")
             if self.attack_light:
                 if isinstance(enemy, Enemy_Boss):
                     enemy_health = enemy.boss_health.taking_damage(PLAYER_DAMAGE_LIGHT)
-                    print(f"Boss health after update={enemy_health}")
                 else:
                     enemy_health = enemy.enemy_health.taking_damage(PLAYER_DAMAGE_LIGHT)
-                    print(f"Enemy health after update={enemy_health}")
             if self.attack_heavy:
                 if isinstance(enemy, Enemy_Boss):
                     enemy_health = enemy.boss_health.taking_damage(PLAYER_DAMAGE_HEAVY)
-                    print(f"Boss health after update={enemy_health}")
                 else:
                     enemy_health = enemy.enemy_health.taking_damage(PLAYER_DAMAGE_HEAVY)
             if enemy_health <= 0:
