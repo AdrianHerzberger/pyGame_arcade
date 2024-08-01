@@ -1,8 +1,8 @@
 import pygame
 from pygame.locals import *
+from enemy_movable_animations import Enemy_Movable_Animations
 
-
-class Enemy_Static_Animations:
+class Enemy_Static_Animations(Enemy_Movable_Animations):
     def __init__(self):
         self.enemy_static_idle_sheet = pygame.image.load(
             "assets/enemy/static/idle.png"
@@ -47,12 +47,6 @@ class Enemy_Static_Animations:
         self.load_idle_animation()
         self.load_dead_animation()
         self.load_static_attack()
-
-    def set_current_animation(self, steps):
-        if self.current_animation_steps != steps:
-            self.current_frame = 0
-        self.current_animation_steps = steps
-        self.animation_delay = self.base_animation_delay / self.max_steps
 
     def load_idle_animation(self):
         for frame in range(self.idle_animation_steps):
@@ -107,19 +101,6 @@ class Enemy_Static_Animations:
         self.update_animation()
         return self.idle_animation[self.current_frame]
 
-    def get_current_dead_animation(self):
-        if not self.dead_animation_finished:
-            self.set_current_animation(self.dead_animation_steps)
-            self.update_animation()
-            if self.current_frame == self.dead_animation_steps - 1:
-                self.dead_animation_finished = True
-            return self.dead_animation[self.current_frame]
-        else:
-            return self.get_dead_static_frame()
-
-    def get_dead_static_frame(self):
-        return self.dead_animation[-1]
-
     def get_current_static_attack_animation(self):
         self.set_current_animation(self.static_attack_steps)
         self.update_animation()
@@ -130,8 +111,3 @@ class Enemy_Static_Animations:
         self.update_animation()
         return self.poison_attack[self.current_frame]
 
-    def update_animation(self):
-        current_time = pygame.time.get_ticks()
-        if current_time - self.last_update_time > self.animation_delay:
-            self.current_frame = (self.current_frame + 1) % self.current_animation_steps
-            self.last_update_time = current_time
