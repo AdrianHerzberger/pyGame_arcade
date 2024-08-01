@@ -12,6 +12,10 @@ class Enemy_Boss(Enemy_Movable):
         self.enemy_boss_animations = Enemy_Boss_Animations()
         self.enm_range_min = random.randint(200, SCREEN_WIDTH // 2)
         self.enm_range_max = random.randint(SCREEN_WIDTH // 2, SCREEN_WIDTH * 2)
+        self.last_attack_time = pygame.time.get_ticks()
+        self.attack_light_interval = 5000
+        self.attack_heavy_interval = 8000
+        self.attack_duration = 2000
         self.scale_factor = 1.5
         self.original_size = (128, 128)
         self.scaled_size = (
@@ -24,7 +28,6 @@ class Enemy_Boss(Enemy_Movable):
     def update(self):
         if self.boss_health.current_health == 0:
             self.is_dead = True
-
         if not self.is_dead:
             self.enm_x_pos += self.speed * self.direction
             self.enemy_collision_rect.topleft = (self.enm_x_pos, self.enm_y_pos)
@@ -38,13 +41,28 @@ class Enemy_Boss(Enemy_Movable):
                 self.facing_left = False
 
     def draw(self, screen, scroll):
+        current_time = pygame.time.get_ticks()
         if self.is_dead:
             animation = self.enemy_boss_animations.get_current_dead_animation()
-            animation = pygame.transform.scale(animation, self.scaled_size)
-            if self.facing_left:
-                animation = pygame.transform.flip(animation, True, False)
-            screen.blit(animation, (self.enm_x_pos - scroll, self.enm_y_pos))
+        elif current_time - self.last_attack_time < self.attack_duration:
+            animation = self.enemy_boss_animations.get_current_attack_light_animation()
+        elif current_time - self.last_attack_time > self.attack_light_interval:
+            self.last_attack_time = current_time
+            animation = self.enemy_boss_animations.get_current_attack_light_animation()
+        elif current_time - self.last_attack_time > self.attack_heavy_interval:
+            self.last_attack_time = current_time
+            animation = self.enemy_boss_animations.get_current_attack_heavy_animation()
         else:
+            animation = self.enemy_boss_animations.get_current_walking_animation()
+
+        if self.facing_left:
+            animation = pygame.transform.flip(animation, True, False)
+
+        animation = pygame.transform.scale(animation, self.scaled_size)
+
+        screen.blit(animation, (self.enm_x_pos - scroll, self.enm_y_pos))
+
+        if not self.is_dead:
             adjust_x_pos = self.enm_x_pos - scroll
             pygame.draw.rect(
                 screen,
@@ -57,11 +75,6 @@ class Enemy_Boss(Enemy_Movable):
                 ),
                 2,
             )
-            animation = self.enemy_boss_animations.get_current_walking_animation()
-            animation = pygame.transform.scale(animation, self.scaled_size)
-            if self.facing_left:
-                animation = pygame.transform.flip(animation, True, False)
-            screen.blit(animation, (self.enm_x_pos - scroll, self.enm_y_pos))
 
     @classmethod
     def create_enemy_boss(cls):
