@@ -24,10 +24,10 @@ class Enemy_Boss_Animations(Enemy_Movable_Animations):
         self.defend_animation = []
         self.dead_animation = []
         
-        self.walking_animation_steps = 7
+        self.walking_animation_steps = 6
         self.hurt_animation_steps = 2
         self.attack_light_animation_steps = 6
-        self.attack_heavy_animation_steps = 7
+        self.attack_heavy_animation_steps = 4
         self.defend_animation_steps = 1
         self.dead_animation_steps = 4
         

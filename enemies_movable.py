@@ -14,7 +14,7 @@ class Enemy_Movable:
         self.enm_x_pos = x
         self.enm_y_pos = y
         self.enm_range_min = random.randint(200, SCREEN_WIDTH // 2)
-        self.enm_range_max = random.randint(SCREEN_WIDTH // 2, SCREEN_WIDTH * 3)
+        self.enm_range_max = random.randint(SCREEN_WIDTH // 2, SCREEN_WIDTH * 2)
         self.speed = 1
         self.direction = 1
         self.scale_factor = 0.8

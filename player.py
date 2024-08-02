@@ -84,6 +84,7 @@ class Player:
                 bottle.is_bottle_collected = True
                 bottles.remove(bottle)
                 self.player_health.heal_up(BOTTLE_HEAL)
+                print(f"{self.player_health.current_health}")
                 if self.player_health_meter_right > 0:
                     self.player_health_meter_right += 1
                 elif self.player_health_meter_left > 0:

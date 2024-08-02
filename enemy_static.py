@@ -52,17 +52,18 @@ class Enemy_Static(Enemy_Movable):
 
         screen.blit(animation, (self.enm_x_pos - scroll, self.enm_y_pos))
 
-        pygame.draw.rect(
-            screen,
-            (0, 255, 0),
-            pygame.Rect(
-                self.enm_x_pos - scroll + 32,
-                self.enm_y_pos + 40,
-                self.enemy_collision_rect.width,
-                self.enemy_collision_rect.height,
-            ),
-            2,
-        )
+        if not self.is_dead: 
+            pygame.draw.rect(
+                screen,
+                (0, 255, 0),
+                pygame.Rect(
+                    self.enm_x_pos - scroll + 32,
+                    self.enm_y_pos + 40,
+                    self.enemy_collision_rect.width,
+                    self.enemy_collision_rect.height,
+                ),
+                2,
+            )
         
     @classmethod
     def create_enemies(cls):
