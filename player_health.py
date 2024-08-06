@@ -19,3 +19,10 @@ class Player_Health:
 
     def is_alive(self):
         return self.current_health > 0
+    
+    def get_health_percentage(self):
+        return self.current_health / self.max_health
+    
+    
+    def reset(self):
+        self.current_health = MAX_PLAYER_HEALTH

@@ -55,7 +55,6 @@ def main():
         Enemy_Static.draw_enemies(screen, enemies_static, scroll)
         Enemy_Boss.draw_boss(screen, enemy_boss, scroll)
         Health_Bottles.draw_health_bottles(screen, bottles, scroll)
-
         pygame.display.flip()
         clock.tick(FPS)
 

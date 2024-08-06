@@ -9,7 +9,7 @@ class World:
     def __init__(self, screen, inputs):
         self.screen = screen
         self.inputs = inputs
-        self.mountain = ["sky", "rock", "grass_far", "grass"]
+        self.mountain = ["sky", "sky_far", "rock", "grass_far", "grass"]
         self.meadow = ["sky", "sky_far", "grass_far", "grass"]
         self.images_mountain = self.load_mountain()
         self.images_meadow = self.load_meadow()
@@ -18,7 +18,7 @@ class World:
         imgs = {}
         for name in self.mountain:
             img = pygame.image.load(f"assets/terrain/mountain/{name}.png").convert_alpha()
-            if name in self.mountain:
+            if name in ["sky", "rock", "grass_far", "grass"]:
                 img = pygame.transform.scale(img, (img.get_width(), img.get_height() * 2))
             imgs[name] = img
         return imgs
@@ -27,7 +27,7 @@ class World:
         imgs = {}
         for name in self.meadow:
             img = pygame.image.load(f"assets/terrain/meadow/{name}.png").convert_alpha()
-            if name in self.meadow:
+            if name in ["sky", "grass_far", "grass"]:
                 img = pygame.transform.scale(img, (img.get_width(), img.get_height() * 2))
             imgs[name] = img
         return imgs

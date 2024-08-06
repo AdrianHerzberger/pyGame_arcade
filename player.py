@@ -6,6 +6,9 @@ from character_animations import Character_Animation
 from health_bar_animations import Health_Bar_Animation
 from player_health import Player_Health
 from player_collision import Player_Collision
+from game_over_screen import GameOverScreen
+from time import time
+
 
 class Player:
     def __init__(self, screen):
@@ -19,8 +22,11 @@ class Player:
         self.is_hit = False
         self.is_dead = False
         self.dead_animation_played = False
+        self.dead_animation_duration = 2.0
+        self.dead_animation_start_time = None
         self.jump_force = 0
         self.gravity = 5
+        self.screen = screen
         self.x_pos = PLAYER_X_POS
         self.y_pos = PLAYER_Y_POS
         self.inputs = GameInputs(self)
@@ -28,6 +34,7 @@ class Player:
         self.collision_handler = Player_Collision(self)
         self.player_health = Player_Health()
         self.player_health_animation = Health_Bar_Animation(screen)
+        self.game_over_screen = GameOverScreen(screen)
         self.player_health_meter_center = 50
         self.player_health_meter_right = 25
         self.player_health_meter_left = 25
@@ -84,17 +91,19 @@ class Player:
                 bottle.is_bottle_collected = True
                 bottles.remove(bottle)
                 self.player_health.heal_up(BOTTLE_HEAL)
-                print(f"{self.player_health.current_health}")
-                if self.player_health_meter_right > 0:
-                    self.player_health_meter_right += 1
-                elif self.player_health_meter_left > 0:
-                    self.player_health_meter_left += 1
-                    if self.player_health_meter_center < 0:
-                        self.player_health_meter_center = 0
-                        self.player_health_meter_left = 0
-                        self.player_health_meter_right = 0
-                elif self.player_health_meter_center > 0:
-                    self.player_health_meter_center += 1
+                self.gain_player_health()
+
+    def gain_player_health(self):
+        if self.player_health_meter_right > 0:
+            self.player_health_meter_right += 1
+        elif self.player_health_meter_left > 0:
+            self.player_health_meter_left += 1
+            if self.player_health_meter_center < 0:
+                self.player_health_meter_center = 0
+                self.player_health_meter_left = 0
+                self.player_health_meter_right = 0
+        elif self.player_health_meter_center > 0:
+            self.player_health_meter_center += 1
 
     
     def kill_enemy(self, enemies, scroll):
@@ -121,7 +130,7 @@ class Player:
         enemy_collisions = self.collision_handler.get_hits(alive_enemies, scroll)
         if enemy_collisions:
             self.is_hit = True
-            self.update_player_health()
+            self.drain_player_health()
         else:
             self.is_hit = False
 
@@ -131,12 +140,42 @@ class Player:
 
         if not self.player_health.is_alive():
             self.is_dead = True
+            if self.dead_animation_start_time is None:
+                self.dead_animation_start_time = time()
+            self.game_over()
 
     def is_enemy_alive(self, enemies):
         alive_enemies = [enemy for enemy in enemies if not enemy.is_dead]
         return alive_enemies
+    
+    
+    def game_over(self):
+        if self.dead_animation_start_time:
+            elapsed_time = time() - self.dead_animation_start_time
+            if elapsed_time < self.dead_animation_duration:
+                animation = self.get_current_animation()
+                self.screen.blit(animation, (self.x_pos, self.y_pos))  
+                pygame.display.flip()
+                return
+            
+        self.game_over_screen.display()
+        while True:
+            action = self.game_over_screen.handle_events()
+            if action == "restart":
+                self.reset_game()
+                break
+            elif action == "quit":
+                pygame.quit()
+                exit()
+                
+    def reset_game(self):
+        self.player_health.reset() 
+        self.x_pos = PLAYER_X_POS
+        self.y_pos = PLAYER_Y_POS
+        self.is_dead = False
+        self.dead_animation_start_time = None
 
-    def update_player_health(self):
+    def drain_player_health(self):
         if self.is_hit:
             current_player_health = self.player_health.taking_damage(ENEMY_DAMAGE)
             if self.player_health_meter_center > 0:
